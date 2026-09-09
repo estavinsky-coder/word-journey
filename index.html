@@ -1,0 +1,658 @@
+<title>מסע המילים</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap">
+<style>
+  :root{
+    --bg:#EEF1E5;
+    --surface:#FFFFFF;
+    --surface-2:#E4E9DA;
+    --ink:#1F2E27;
+    --ink-soft:#4B5A50;
+    --line:#CBD4C1;
+    --accent:#2C6E63;      /* trail teal — nouns */
+    --accent-ink:#FFFFFF;
+    --verb:#C97C1F;        /* compass amber — verbs */
+    --adj:#3E6FA6;         /* river blue — adjectives */
+    --other:#7B5AA6;       /* dusk plum — other */
+    --good:#2C6E63;
+    --bad:#B4472E;
+    --shadow: 0 1px 2px rgba(31,46,39,.06), 0 6px 20px -8px rgba(31,46,39,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#101B15;
+      --surface:#182720;
+      --surface-2:#1F3128;
+      --ink:#EAF0E6;
+      --ink-soft:#AFC0B3;
+      --line:#2D4238;
+      --accent:#59B39F;
+      --accent-ink:#0B1712;
+      --verb:#E3A94A;
+      --adj:#7AA6D9;
+      --other:#B79AE0;
+      --good:#59B39F;
+      --bad:#E08A72;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px -10px rgba(0,0,0,.55);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#101B15;
+    --surface:#182720;
+    --surface-2:#1F3128;
+    --ink:#EAF0E6;
+    --ink-soft:#AFC0B3;
+    --line:#2D4238;
+    --accent:#59B39F;
+    --accent-ink:#0B1712;
+    --verb:#E3A94A;
+    --adj:#7AA6D9;
+    --other:#B79AE0;
+    --good:#59B39F;
+    --bad:#E08A72;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px -10px rgba(0,0,0,.55);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{background:var(--bg);}
+  .app{
+    direction:rtl;
+    font-family:'Rubik',system-ui,sans-serif;
+    color:var(--ink);
+    background:var(--bg);
+    min-height:100%;
+    padding:22px 16px 60px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:20px;
+  }
+  .en{ direction:ltr; unicode-bidi:isolate; font-family:'Fraunces',Georgia,serif; }
+
+  /* ---------- header ---------- */
+  .head{
+    width:100%; max-width:880px;
+    display:flex; flex-direction:column; align-items:center; gap:6px;
+    text-align:center;
+  }
+  .head .compass{ font-size:34px; line-height:1; }
+  .head h1{
+    margin:0; font-size:clamp(24px,4vw,32px); font-weight:800;
+    letter-spacing:-.01em; text-wrap:balance;
+  }
+  .head p{ margin:0; color:var(--ink-soft); font-size:14.5px; max-width:52ch; text-wrap:balance; }
+  .unit-tag{
+    font-size:11.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
+    color:var(--accent); background:color-mix(in srgb, var(--accent) 14%, transparent);
+    padding:4px 12px; border-radius:100px;
+  }
+
+  /* ---------- nav ---------- */
+  .tabs{
+    display:flex; gap:8px; background:var(--surface); border:1px solid var(--line);
+    padding:5px; border-radius:14px; box-shadow:var(--shadow);
+  }
+  .tab{
+    appearance:none; border:none; background:transparent; cursor:pointer;
+    font-family:inherit; font-size:14.5px; font-weight:600; color:var(--ink-soft);
+    padding:9px 18px; border-radius:10px; transition:background .15s,color .15s;
+  }
+  .tab:hover{ color:var(--ink); }
+  .tab[aria-selected="true"]{ background:var(--accent); color:var(--accent-ink); }
+  .tab:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  /* ---------- category filter ---------- */
+  .cats{ display:flex; flex-wrap:wrap; gap:8px; justify-content:center; max-width:880px; }
+  .chip{
+    appearance:none; cursor:pointer; font-family:inherit; font-size:13.5px; font-weight:600;
+    border-radius:100px; padding:7px 14px; border:1.5px solid var(--c,var(--line));
+    background:var(--surface); color:var(--ink); display:flex; align-items:center; gap:6px;
+    transition:background .15s,color .15s,transform .1s;
+  }
+  .chip .dot{ width:8px; height:8px; border-radius:50%; background:var(--c,var(--ink-soft)); }
+  .chip[aria-pressed="true"]{ background:var(--c,var(--accent)); border-color:var(--c,var(--accent)); color:#fff; }
+  .chip[aria-pressed="true"] .dot{ background:#fff; }
+  .chip:active{ transform:scale(.97); }
+  .chip:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  main{ width:100%; max-width:880px; }
+  [hidden]{ display:none !important; }
+
+  /* ---------- flashcards ---------- */
+  .fc-bar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:10px; flex-wrap:wrap; }
+  .fc-progress{ font-size:13px; color:var(--ink-soft); font-variant-numeric:tabular-nums; }
+  .fc-reset{
+    font-family:inherit; font-size:13px; font-weight:600; color:var(--ink-soft);
+    background:none; border:1px solid var(--line); border-radius:8px; padding:5px 11px; cursor:pointer;
+  }
+  .fc-reset:hover{ color:var(--bad); border-color:var(--bad); }
+
+  .fc-grid{
+    display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:14px;
+  }
+  .fc{
+    perspective:1200px; height:132px; cursor:pointer;
+  }
+  .fc-inner{
+    position:relative; width:100%; height:100%; transition:transform .5s cubic-bezier(.4,.2,.2,1);
+    transform-style:preserve-3d;
+  }
+  .fc.flipped .fc-inner{ transform:rotateY(180deg); }
+  .fc-face{
+    position:absolute; inset:0; backface-visibility:hidden; border-radius:14px;
+    border:1px solid var(--line); background:var(--surface); box-shadow:var(--shadow);
+    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px;
+    padding:12px; text-align:center;
+  }
+  .fc-face.front{ border-top:4px solid var(--c,var(--accent)); }
+  .fc-face.back{ transform:rotateY(180deg); background:var(--surface-2); }
+  .fc-word{ font-size:20px; font-weight:600; }
+  .fc-face.back .fc-word{ font-family:'Rubik',sans-serif; }
+  .fc-word-row{ display:flex; align-items:center; gap:7px; }
+  .fc-speak{
+    appearance:none; border:none; background:none; cursor:pointer; font-size:16px; line-height:1;
+    padding:3px; color:var(--c,var(--accent));
+  }
+  .fc-speak:hover{ transform:scale(1.12); }
+  .fc-speak:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:6px; }
+  .fc-cat{ font-size:10.5px; text-transform:uppercase; letter-spacing:.07em; color:var(--c,var(--ink-soft)); font-weight:700; }
+  .fc-star{
+    position:absolute; top:8px; left:8px; background:none; border:none; cursor:pointer;
+    font-size:16px; opacity:.35; line-height:1; padding:4px;
+  }
+  .fc-star[aria-pressed="true"]{ opacity:1; }
+  .fc-hint{ font-size:11px; color:var(--ink-soft); }
+
+  /* ---------- match game ---------- */
+  .mg-bar{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:10px; flex-wrap:wrap; }
+  .mg-stats{ display:flex; gap:16px; font-size:13px; color:var(--ink-soft); font-variant-numeric:tabular-nums; }
+  .mg-stats b{ color:var(--ink); }
+  .mg-new{
+    font-family:inherit; font-size:13px; font-weight:700; color:var(--accent-ink);
+    background:var(--accent); border:none; border-radius:8px; padding:7px 14px; cursor:pointer;
+  }
+  .mg-grid{
+    display:grid; grid-template-columns:repeat(4,1fr); gap:10px;
+  }
+  @media (max-width:560px){ .mg-grid{ grid-template-columns:repeat(3,1fr); } }
+  .mg-card{
+    aspect-ratio:1/1; border-radius:12px; border:1px solid var(--line); background:var(--surface);
+    box-shadow:var(--shadow); cursor:pointer; display:flex; align-items:center; justify-content:center;
+    padding:8px; text-align:center; font-size:14px; font-weight:600; transition:transform .12s,background .15s,border-color .15s;
+  }
+  .mg-card:hover{ transform:translateY(-2px); }
+  .mg-card.open{ background:var(--surface-2); border-color:var(--accent); }
+  .mg-card.matched{ background:color-mix(in srgb, var(--good) 16%, var(--surface)); border-color:var(--good); color:var(--good); cursor:default; opacity:.85; }
+  .mg-card.wrong{ border-color:var(--bad); animation:shake .3s; }
+  .mg-card.hidden-word{ color:transparent; }
+  .mg-card.hidden-word::after{ content:"🧭"; color:var(--ink-soft); font-size:20px; }
+  @keyframes shake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-4px);} 75%{transform:translateX(4px);} }
+  .mg-win{ margin-top:14px; text-align:center; color:var(--good); font-weight:700; font-size:15px; }
+
+  /* ---------- quiz ---------- */
+  .qz-progress-row{ display:flex; align-items:center; gap:10px; margin-bottom:18px; }
+  .qz-dots{ display:flex; gap:5px; flex:1; flex-wrap:wrap; }
+  .qz-dot{ width:9px; height:9px; border-radius:50%; background:var(--line); }
+  .qz-dot.done-right{ background:var(--good); }
+  .qz-dot.done-wrong{ background:var(--bad); }
+  .qz-dot.current{ background:var(--accent); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
+  .qz-score{ font-size:13px; color:var(--ink-soft); font-variant-numeric:tabular-nums; white-space:nowrap; }
+
+  .qz-card{
+    background:var(--surface); border:1px solid var(--line); border-radius:18px; padding:32px 24px;
+    box-shadow:var(--shadow); text-align:center; display:flex; flex-direction:column; align-items:center; gap:6px;
+  }
+  .qz-cat{ font-size:11px; text-transform:uppercase; letter-spacing:.07em; font-weight:700; color:var(--c,var(--accent)); }
+  .qz-prompt{ font-size:26px; font-weight:700; margin:6px 0 22px; }
+  .qz-options{ display:grid; grid-template-columns:1fr 1fr; gap:10px; width:100%; max-width:520px; }
+  @media (max-width:520px){ .qz-options{ grid-template-columns:1fr; } }
+  .qz-opt-row{ display:flex; gap:6px; }
+  .qz-opt{
+    flex:1; font-family:'Fraunces',Georgia,serif; direction:ltr; font-size:17px; font-weight:600;
+    background:var(--surface-2); border:1.5px solid var(--line); border-radius:12px; padding:14px 12px;
+    cursor:pointer; color:var(--ink); transition:border-color .12s,background .12s,transform .08s;
+  }
+  .qz-speak{
+    flex:0 0 44px; font-size:17px; border-radius:12px; border:1.5px solid var(--line);
+    background:var(--surface-2); color:var(--ink-soft); cursor:pointer;
+  }
+  .qz-speak:hover{ border-color:var(--accent); color:var(--accent); }
+  .qz-opt:hover{ border-color:var(--accent); }
+  .qz-opt:active{ transform:scale(.98); }
+  .qz-opt.correct{ background:color-mix(in srgb, var(--good) 20%, var(--surface-2)); border-color:var(--good); }
+  .qz-opt.incorrect{ background:color-mix(in srgb, var(--bad) 20%, var(--surface-2)); border-color:var(--bad); }
+  .qz-opt:disabled{ cursor:default; opacity:.85; }
+  .qz-next{
+    margin-top:20px; font-family:inherit; font-size:14px; font-weight:700; color:var(--accent-ink);
+    background:var(--accent); border:none; border-radius:10px; padding:10px 22px; cursor:pointer;
+  }
+  .qz-result h2{ margin:0 0 4px; font-size:22px; }
+  .qz-result .big{ font-size:44px; font-weight:800; color:var(--accent); font-variant-numeric:tabular-nums; }
+  .qz-review{ margin-top:18px; width:100%; text-align:right; }
+  .qz-review-item{
+    display:flex; justify-content:space-between; gap:10px; padding:9px 4px; border-bottom:1px solid var(--line);
+    font-size:14px;
+  }
+  .qz-review-item:last-child{ border-bottom:none; }
+  .qz-review-item .en{ font-weight:600; }
+
+  @media (prefers-reduced-motion: reduce){
+    .fc-inner, .mg-card, .qz-opt{ transition:none; }
+    .mg-card.wrong{ animation:none; }
+  }
+</style>
+
+<div class="app">
+  <div class="head">
+    <div class="compass">🧭</div>
+    <span class="unit-tag">Unit 1 · A Typical Day</span>
+    <h1>מסע המילים</h1>
+    <p>תרגלו את מילות היחידה בשלושה תחנות: כרטיסיות, זיכרון וחידון. כל תחנה בדרך מקרבת אתכם לשליטה מלאה באוצר המילים.</p>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="מצבי תרגול">
+    <button class="tab" role="tab" data-mode="flash" aria-selected="true">כרטיסיות</button>
+    <button class="tab" role="tab" data-mode="match" aria-selected="false">משחק זיכרון</button>
+    <button class="tab" role="tab" data-mode="quiz" aria-selected="false">חידון</button>
+  </div>
+
+  <div class="cats" id="cats"></div>
+
+  <main>
+    <section id="view-flash">
+      <div class="fc-bar">
+        <span class="fc-progress" id="fcProgress"></span>
+        <button class="fc-reset" id="fcReset">איפוס סימונים</button>
+      </div>
+      <div class="fc-grid" id="fcGrid"></div>
+    </section>
+
+    <section id="view-match" hidden>
+      <div class="mg-bar">
+        <div class="mg-stats"><span>מהלכים: <b id="mgMoves">0</b></span><span>זמן: <b id="mgTime">0:00</b></span></div>
+        <button class="mg-new" id="mgNew">סבב חדש</button>
+      </div>
+      <div class="mg-grid" id="mgGrid"></div>
+      <p class="mg-win" id="mgWin" hidden></p>
+    </section>
+
+    <section id="view-quiz" hidden>
+      <div id="qzPlay">
+        <div class="qz-progress-row">
+          <div class="qz-dots" id="qzDots"></div>
+          <span class="qz-score" id="qzScore">0/0</span>
+        </div>
+        <div class="qz-card">
+          <span class="qz-cat" id="qzCat"></span>
+          <div class="qz-prompt" id="qzPrompt"></div>
+          <div class="qz-options" id="qzOptions"></div>
+          <button class="qz-next" id="qzNext" hidden>הבא ←</button>
+        </div>
+      </div>
+      <div id="qzDone" class="qz-card qz-result" hidden>
+        <h2>סיימת את החידון!</h2>
+        <div class="big" id="qzBig">0/0</div>
+        <p id="qzMsg" style="color:var(--ink-soft)"></p>
+        <div class="qz-review" id="qzReview"></div>
+        <button class="qz-next" id="qzRestart">נסו שוב</button>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var WORDS = [
+    {en:"activity", he:"פעילות", cat:"noun"},
+    {en:"village", he:"כפר", cat:"noun"},
+    {en:"bridge", he:"גשר", cat:"noun"},
+    {en:"choice", he:"בחירה", cat:"noun"},
+    {en:"danger", he:"סכנה", cat:"noun"},
+    {en:"journey", he:"מסע", cat:"noun"},
+    {en:"mountain", he:"הר", cat:"noun"},
+    {en:"river", he:"נהר", cat:"noun"},
+    {en:"continue", he:"להמשיך", cat:"verb"},
+    {en:"depend on", he:"תלוי ב-", cat:"verb"},
+    {en:"fix", he:"לתקן", cat:"verb"},
+    {en:"imagine", he:"לדמיין", cat:"verb"},
+    {en:"prefer", he:"להעדיף", cat:"verb"},
+    {en:"realize", he:"להבין / לזהות", cat:"verb"},
+    {en:"careful", he:"זהיר", cat:"adj"},
+    {en:"dangerous", he:"מסוכן", cat:"adj"},
+    {en:"possible", he:"אפשרי", cat:"adj"},
+    {en:"unusual", he:"יוצא דופן", cat:"adj"},
+    {en:"usual", he:"רגיל", cat:"adj"},
+    {en:"wide", he:"רחב", cat:"adj"},
+    {en:"across", he:"מעבר ל-", cat:"other"},
+    {en:"any", he:"איזשהו", cat:"other"},
+    {en:"anybody", he:"מישהו", cat:"other"},
+    {en:"directly", he:"ישירות", cat:"other"},
+    {en:"next to", he:"ליד", cat:"other"}
+  ];
+  var CATS = {
+    all:   {label:"הכל",        c:null},
+    noun:  {label:"שמות עצם",   c:"var(--accent)"},
+    verb:  {label:"פעלים",      c:"var(--verb)"},
+    adj:   {label:"תארים",      c:"var(--adj)"},
+    other: {label:"אחר",        c:"var(--other)"}
+  };
+  var catColor = function(cat){ return CATS[cat] ? CATS[cat].c : null; };
+
+  var activeCat = "all";
+  var activeMode = "flash";
+
+  function pool(){
+    return activeCat === "all" ? WORDS : WORDS.filter(function(w){ return w.cat === activeCat; });
+  }
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function speak(text){
+    try{
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US";
+      u.rate = 0.85;
+      window.speechSynthesis.speak(u);
+    } catch(e){}
+  }
+  function starKey(en){ return "wj_star_" + en; }
+  function getStar(en){ try{ return localStorage.getItem(starKey(en)) === "1"; }catch(e){ return false; } }
+  function setStar(en, v){ try{ localStorage.setItem(starKey(en), v ? "1" : "0"); }catch(e){} }
+
+  /* ---------- tabs ---------- */
+  var tabs = document.querySelectorAll(".tab");
+  var views = { flash: document.getElementById("view-flash"), match: document.getElementById("view-match"), quiz: document.getElementById("view-quiz") };
+  tabs.forEach(function(t){
+    t.addEventListener("click", function(){
+      tabs.forEach(function(o){ o.setAttribute("aria-selected", "false"); });
+      t.setAttribute("aria-selected", "true");
+      activeMode = t.getAttribute("data-mode");
+      Object.keys(views).forEach(function(k){ views[k].hidden = (k !== activeMode); });
+      if (activeMode === "match" && !mgState.started) startMatch();
+      if (activeMode === "quiz" && !qzState.started) startQuiz();
+    });
+  });
+
+  /* ---------- category chips ---------- */
+  var catsBar = document.getElementById("cats");
+  Object.keys(CATS).forEach(function(key){
+    var b = document.createElement("button");
+    b.className = "chip";
+    b.setAttribute("aria-pressed", key === "all" ? "true" : "false");
+    if (CATS[key].c) b.style.setProperty("--c", CATS[key].c);
+    b.innerHTML = '<span class="dot"></span>' + CATS[key].label;
+    b.addEventListener("click", function(){
+      activeCat = key;
+      document.querySelectorAll(".chip").forEach(function(c){ c.setAttribute("aria-pressed", "false"); });
+      b.setAttribute("aria-pressed", "true");
+      renderFlash();
+      startMatch();
+      startQuiz();
+    });
+    catsBar.appendChild(b);
+  });
+
+  /* ---------- flashcards ---------- */
+  var fcGrid = document.getElementById("fcGrid");
+  var fcProgress = document.getElementById("fcProgress");
+  function renderFlash(){
+    var words = pool();
+    fcGrid.innerHTML = "";
+    words.forEach(function(w){
+      var card = document.createElement("div");
+      card.className = "fc";
+      card.innerHTML =
+        '<div class="fc-inner">' +
+          '<div class="fc-face front"><div class="fc-word-row"><span class="fc-word en">' + w.en + '</span><button class="fc-speak" title="השמע מילה">🔊</button></div><span class="fc-hint">הקישו לתרגום</span></div>' +
+          '<div class="fc-face back"><span class="fc-word">' + w.he + '</span></div>' +
+        '</div>' +
+        '<button class="fc-star" aria-pressed="' + getStar(w.en) + '" title="סמנו כידוע">' + (getStar(w.en) ? "★" : "☆") + '</button>';
+      card.style.setProperty("--c", catColor(w.cat) || "var(--accent)");
+      card.addEventListener("click", function(e){
+        if (e.target.classList.contains("fc-star") || e.target.classList.contains("fc-speak")) return;
+        card.classList.toggle("flipped");
+      });
+      var speakBtn = card.querySelector(".fc-speak");
+      speakBtn.addEventListener("click", function(e){
+        e.stopPropagation();
+        speak(w.en);
+      });
+      var star = card.querySelector(".fc-star");
+      star.addEventListener("click", function(e){
+        e.stopPropagation();
+        var next = !getStar(w.en);
+        setStar(w.en, next);
+        star.setAttribute("aria-pressed", next);
+        star.textContent = next ? "★" : "☆";
+        updateFcProgress();
+      });
+      fcGrid.appendChild(card);
+    });
+    updateFcProgress();
+  }
+  function updateFcProgress(){
+    var words = pool();
+    var known = words.filter(function(w){ return getStar(w.en); }).length;
+    fcProgress.textContent = "ידועות: " + known + " מתוך " + words.length;
+  }
+  document.getElementById("fcReset").addEventListener("click", function(){
+    WORDS.forEach(function(w){ setStar(w.en, false); });
+    renderFlash();
+  });
+
+  /* ---------- matching game ---------- */
+  var mgGrid = document.getElementById("mgGrid");
+  var mgMoves = document.getElementById("mgMoves");
+  var mgTime = document.getElementById("mgTime");
+  var mgWin = document.getElementById("mgWin");
+  var mgState = { started:false, open:[], matched:0, moves:0, timer:null, seconds:0, pairs:0 };
+
+  function startMatch(){
+    clearInterval(mgState.timer);
+    var words = pool();
+    var n = Math.min(6, words.length);
+    var picked = shuffle(words).slice(0, n);
+    mgState = { started:true, open:[], matched:0, moves:0, seconds:0, pairs:picked.length, timer:null };
+    mgMoves.textContent = "0";
+    mgTime.textContent = "0:00";
+    mgWin.hidden = true;
+
+    var cards = [];
+    picked.forEach(function(w, i){
+      cards.push({ id:i, side:"en", text:w.en, match:w.he, cat:w.cat });
+      cards.push({ id:i, side:"he", text:w.he, match:w.en, cat:w.cat });
+    });
+    cards = shuffle(cards);
+
+    mgGrid.innerHTML = "";
+    cards.forEach(function(c){
+      var el = document.createElement("div");
+      el.className = "mg-card hidden-word";
+      el.dataset.pairId = c.id;
+      el.dataset.side = c.side;
+      var span = document.createElement("span");
+      span.className = c.side === "en" ? "en" : "";
+      span.textContent = c.text;
+      el.appendChild(span);
+      el.style.setProperty("--c", catColor(c.cat) || "var(--accent)");
+      el.addEventListener("click", function(){ onMgClick(el); });
+      mgGrid.appendChild(el);
+    });
+
+    mgState.timer = setInterval(function(){
+      mgState.seconds++;
+      var m = Math.floor(mgState.seconds / 60), s = mgState.seconds % 60;
+      mgTime.textContent = m + ":" + (s < 10 ? "0" : "") + s;
+    }, 1000);
+  }
+
+  function onMgClick(el){
+    if (el.classList.contains("open") || el.classList.contains("matched")) return;
+    if (mgState.open.length === 2) return;
+    el.classList.remove("hidden-word");
+    el.classList.add("open");
+    mgState.open.push(el);
+    if (mgState.open.length === 2){
+      mgState.moves++;
+      mgMoves.textContent = mgState.moves;
+      var a = mgState.open[0], b = mgState.open[1];
+      var isMatch = a.dataset.pairId === b.dataset.pairId && a.dataset.side !== b.dataset.side;
+      if (isMatch){
+        a.classList.add("matched"); b.classList.add("matched");
+        a.classList.remove("open"); b.classList.remove("open");
+        mgState.open = [];
+        mgState.matched++;
+        if (mgState.matched === mgState.pairs) finishMatch();
+      } else {
+        a.classList.add("wrong"); b.classList.add("wrong");
+        setTimeout(function(){
+          a.classList.remove("open","wrong","hidden-word"); b.classList.remove("open","wrong","hidden-word");
+          a.classList.add("hidden-word"); b.classList.add("hidden-word");
+          mgState.open = [];
+        }, 700);
+      }
+    }
+  }
+  function finishMatch(){
+    clearInterval(mgState.timer);
+    mgWin.hidden = false;
+    mgWin.textContent = "כל הכבוד! " + mgState.pairs + " זוגות ב-" + mgState.moves + " מהלכים.";
+  }
+  document.getElementById("mgNew").addEventListener("click", startMatch);
+
+  /* ---------- quiz ---------- */
+  var qzPlay = document.getElementById("qzPlay");
+  var qzDone = document.getElementById("qzDone");
+  var qzDots = document.getElementById("qzDots");
+  var qzScore = document.getElementById("qzScore");
+  var qzCat = document.getElementById("qzCat");
+  var qzPrompt = document.getElementById("qzPrompt");
+  var qzOptions = document.getElementById("qzOptions");
+  var qzNext = document.getElementById("qzNext");
+  var qzState = { started:false, qs:[], i:0, correct:0, results:[], answered:false };
+
+  function startQuiz(){
+    var words = pool();
+    var n = Math.min(10, words.length);
+    var chosen = shuffle(words).slice(0, n);
+    qzState = { started:true, qs:chosen, i:0, correct:0, results:[], answered:false };
+    qzDone.hidden = true;
+    qzPlay.hidden = false;
+    renderDots();
+    renderQuestion();
+  }
+  function renderDots(){
+    qzDots.innerHTML = "";
+    qzState.qs.forEach(function(_, idx){
+      var d = document.createElement("span");
+      d.className = "qz-dot" + (idx === qzState.i ? " current" : "");
+      var r = qzState.results[idx];
+      if (r === true) d.className = "qz-dot done-right";
+      if (r === false) d.className = "qz-dot done-wrong";
+      qzDots.appendChild(d);
+    });
+    qzScore.textContent = qzState.correct + "/" + qzState.qs.length;
+  }
+  function renderQuestion(){
+    qzState.answered = false;
+    qzNext.hidden = true;
+    var w = qzState.qs[qzState.i];
+    qzCat.textContent = CATS[w.cat].label;
+    qzCat.style.setProperty("--c", catColor(w.cat) || "var(--accent)");
+    qzPrompt.textContent = w.he;
+
+    var distractors = shuffle(WORDS.filter(function(o){ return o.en !== w.en; })).slice(0, 3).map(function(o){ return o.en; });
+    var opts = shuffle([w.en].concat(distractors));
+
+    qzOptions.innerHTML = "";
+    opts.forEach(function(opt){
+      var row = document.createElement("div");
+      row.className = "qz-opt-row";
+      var b = document.createElement("button");
+      b.className = "qz-opt";
+      var span = document.createElement("span");
+      span.className = "en";
+      span.textContent = opt;
+      b.appendChild(span);
+      b.addEventListener("click", function(){ onQzAnswer(b, opt, w.en); });
+      var sp = document.createElement("button");
+      sp.className = "qz-speak";
+      sp.type = "button";
+      sp.title = "השמע מילה";
+      sp.textContent = "🔊";
+      sp.addEventListener("click", function(){ speak(opt); });
+      row.appendChild(b);
+      row.appendChild(sp);
+      qzOptions.appendChild(row);
+    });
+    renderDots();
+  }
+  function onQzAnswer(btn, chosen, correctAnswer){
+    if (qzState.answered) return;
+    qzState.answered = true;
+    var right = chosen === correctAnswer;
+    qzState.results[qzState.i] = right;
+    if (right) qzState.correct++;
+    else qzState.reviewMiss = qzState.reviewMiss || [];
+
+    Array.prototype.forEach.call(qzOptions.querySelectorAll(".qz-opt"), function(b){
+      b.disabled = true;
+      var isThisCorrect = b.textContent === correctAnswer;
+      if (isThisCorrect) b.classList.add("correct");
+      else if (b === btn) b.classList.add("incorrect");
+    });
+    if (!right) qzState.results.miss = qzState.results.miss || [];
+    renderDots();
+    qzNext.hidden = false;
+    qzNext.textContent = (qzState.i === qzState.qs.length - 1) ? "לתוצאות ←" : "הבא ←";
+  }
+  qzNext.addEventListener("click", function(){
+    if (qzState.i < qzState.qs.length - 1){
+      qzState.i++;
+      renderQuestion();
+    } else {
+      finishQuiz();
+    }
+  });
+  function finishQuiz(){
+    qzPlay.hidden = true;
+    qzDone.hidden = false;
+    document.getElementById("qzBig").textContent = qzState.correct + "/" + qzState.qs.length;
+    var pct = Math.round((qzState.correct / qzState.qs.length) * 100);
+    var msg = pct === 100 ? "מושלם! שולטים ביחידה לגמרי." : pct >= 70 ? "כמעט שם — עוד סבב ותשלטו בהכל." : "כדאי לחזור על הכרטיסיות ולנסות שוב.";
+    document.getElementById("qzMsg").textContent = msg;
+
+    var review = document.getElementById("qzReview");
+    review.innerHTML = "";
+    var missed = qzState.qs.filter(function(_, idx){ return qzState.results[idx] === false; });
+    if (missed.length){
+      var title = document.createElement("p");
+      title.style.fontWeight = "700";
+      title.style.marginBottom = "4px";
+      title.textContent = "כדאי לחזור על:";
+      review.appendChild(title);
+      missed.forEach(function(w){
+        var row = document.createElement("div");
+        row.className = "qz-review-item";
+        row.innerHTML = '<span class="en">' + w.en + '</span><span>' + w.he + '</span>';
+        review.appendChild(row);
+      });
+    }
+  }
+  document.getElementById("qzRestart").addEventListener("click", startQuiz);
+
+  /* ---------- init ---------- */
+  renderFlash();
+})();
+</script>
