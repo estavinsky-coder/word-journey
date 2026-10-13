@@ -94,6 +94,22 @@
     padding:4px 12px; border-radius:100px;
   }
 
+  /* ---------- word-list switcher ---------- */
+  .sets{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:6px;
+    border-bottom:1.5px solid var(--line); width:100%; max-width:880px;
+  }
+  .set-tab{
+    appearance:none; border:none; background:transparent; cursor:pointer;
+    font-family:inherit; font-size:15px; font-weight:700; color:var(--ink-soft);
+    padding:10px 18px; margin-bottom:-1.5px; border-bottom:3px solid transparent;
+    transition:color .15s,border-color .15s;
+  }
+  .set-tab:hover{ color:var(--ink); }
+  .set-tab[aria-selected="true"]{ color:var(--ink); border-bottom-color:var(--accent); }
+  .set-tab:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; border-radius:6px; }
+  .set-tab small{ font-weight:500; color:var(--ink-soft); margin-inline-start:8px; unicode-bidi:isolate; }
+
   /* ---------- nav ---------- */
   .tabs{
     display:flex; gap:8px; background:var(--surface); border:1px solid var(--line);
@@ -250,14 +266,15 @@
 </style>
 </head>
 <body>
-
 <div class="app">
   <div class="head">
     <div class="compass">🧭</div>
-    <span class="unit-tag">Unit 1 · A Typical Day</span>
+    <span class="unit-tag" id="unitTag">Unit 1 · A Typical Day</span>
     <h1>מסע המילים</h1>
     <p>תרגלו את מילות היחידה בשלושה תחנות: כרטיסיות, זיכרון וחידון. כל תחנה בדרך מקרבת אתכם לשליטה מלאה באוצר המילים.</p>
   </div>
+
+  <div class="sets" id="sets" role="tablist" aria-label="רשימות מילים"></div>
 
   <div class="tabs" role="tablist" aria-label="מצבי תרגול">
     <button class="tab" role="tab" data-mode="flash" aria-selected="true">כרטיסיות</button>
@@ -313,33 +330,71 @@
 (function(){
   "use strict";
 
-  var WORDS = [
-    {en:"activity", he:"פעילות", cat:"noun"},
-    {en:"village", he:"כפר", cat:"noun"},
-    {en:"bridge", he:"גשר", cat:"noun"},
-    {en:"choice", he:"בחירה", cat:"noun"},
-    {en:"danger", he:"סכנה", cat:"noun"},
-    {en:"journey", he:"מסע", cat:"noun"},
-    {en:"mountain", he:"הר", cat:"noun"},
-    {en:"river", he:"נהר", cat:"noun"},
-    {en:"continue", he:"להמשיך", cat:"verb"},
-    {en:"depend on", he:"תלוי ב-", cat:"verb"},
-    {en:"fix", he:"לתקן", cat:"verb"},
-    {en:"imagine", he:"לדמיין", cat:"verb"},
-    {en:"prefer", he:"להעדיף", cat:"verb"},
-    {en:"realize", he:"להבין / לזהות", cat:"verb"},
-    {en:"careful", he:"זהיר", cat:"adj"},
-    {en:"dangerous", he:"מסוכן", cat:"adj"},
-    {en:"possible", he:"אפשרי", cat:"adj"},
-    {en:"unusual", he:"יוצא דופן", cat:"adj"},
-    {en:"usual", he:"רגיל", cat:"adj"},
-    {en:"wide", he:"רחב", cat:"adj"},
-    {en:"across", he:"מעבר ל-", cat:"other"},
-    {en:"any", he:"איזשהו", cat:"other"},
-    {en:"anybody", he:"מישהו", cat:"other"},
-    {en:"directly", he:"ישירות", cat:"other"},
-    {en:"next to", he:"ליד", cat:"other"}
-  ];
+  /* Each word list is its own tab, so the lists never mix. */
+  var SETS = {
+    u1: {
+      tab: "רשימה 1", note: "A Typical Day", tag: "Unit 1 · A Typical Day",
+      words: [
+        {en:"activity", he:"פעילות", cat:"noun"},
+        {en:"village", he:"כפר", cat:"noun"},
+        {en:"bridge", he:"גשר", cat:"noun"},
+        {en:"choice", he:"בחירה", cat:"noun"},
+        {en:"danger", he:"סכנה", cat:"noun"},
+        {en:"journey", he:"מסע", cat:"noun"},
+        {en:"mountain", he:"הר", cat:"noun"},
+        {en:"river", he:"נהר", cat:"noun"},
+        {en:"continue", he:"להמשיך", cat:"verb"},
+        {en:"depend on", he:"תלוי ב-", cat:"verb"},
+        {en:"fix", he:"לתקן", cat:"verb"},
+        {en:"imagine", he:"לדמיין", cat:"verb"},
+        {en:"prefer", he:"להעדיף", cat:"verb"},
+        {en:"realize", he:"להבין / לזהות", cat:"verb"},
+        {en:"careful", he:"זהיר", cat:"adj"},
+        {en:"dangerous", he:"מסוכן", cat:"adj"},
+        {en:"possible", he:"אפשרי", cat:"adj"},
+        {en:"unusual", he:"יוצא דופן", cat:"adj"},
+        {en:"usual", he:"רגיל", cat:"adj"},
+        {en:"wide", he:"רחב", cat:"adj"},
+        {en:"across", he:"מעבר ל-", cat:"other"},
+        {en:"any", he:"איזשהו", cat:"other"},
+        {en:"anybody", he:"מישהו", cat:"other"},
+        {en:"directly", he:"ישירות", cat:"other"},
+        {en:"next to", he:"ליד", cat:"other"}
+      ]
+    },
+    u2: {
+      tab: "רשימה 2", note: "מילים חדשות", tag: "Word List 2",
+      words: [
+        {en:"bowl", he:"קערה", cat:"noun"},
+        {en:"guide", he:"מדריך", cat:"noun"},
+        {en:"history", he:"היסטוריה", cat:"noun"},
+        {en:"job", he:"עבודה / מקצוע", cat:"noun"},
+        {en:"lemon", he:"לימון", cat:"noun"},
+        {en:"meal", he:"ארוחה", cat:"noun"},
+        {en:"nation", he:"אומה / לאום", cat:"noun"},
+        {en:"oil", he:"שמן", cat:"noun"},
+        {en:"pepper", he:"פלפל", cat:"noun"},
+        {en:"salt", he:"מלח", cat:"noun"},
+        {en:"world", he:"עולם", cat:"noun"},
+        {en:"amaze", he:"להדהים", cat:"verb"},
+        {en:"fall in love", he:"להתאהב", cat:"verb"},
+        {en:"feed", he:"להאכיל", cat:"verb"},
+        {en:"follow", he:"לעקוב", cat:"verb"},
+        {en:"open", he:"לפתוח", cat:"verb"},
+        {en:"receive", he:"לקבל", cat:"verb"},
+        {en:"serve", he:"להגיש", cat:"verb"},
+        {en:"shake hands", he:"ללחוץ ידיים", cat:"verb"},
+        {en:"welcome", he:"לקבל בברכה / לברך", cat:"verb"},
+        {en:"amazing", he:"מדהים", cat:"adj"},
+        {en:"certain", he:"בטוח", cat:"adj"},
+        {en:"lovely", he:"נפלא / מקסים", cat:"adj"},
+        {en:"main", he:"עיקרי / ראשי", cat:"adj"},
+        {en:"typical", he:"טיפוסי", cat:"adj"},
+        {en:"warm", he:"חם", cat:"adj"},
+        {en:"according to", he:"לפי...", cat:"other"}
+      ]
+    }
+  };
   var CATS = {
     all:   {label:"הכל",        c:null},
     noun:  {label:"שמות עצם",   c:"var(--accent)"},
@@ -349,6 +404,9 @@
   };
   var catColor = function(cat){ return CATS[cat] ? CATS[cat].c : null; };
 
+  var activeSet = "u1";
+  try{ var savedSet = localStorage.getItem("wj_set"); if (SETS[savedSet]) activeSet = savedSet; }catch(e){}
+  var WORDS = SETS[activeSet].words;
   var activeCat = "all";
   var activeMode = "flash";
 
@@ -373,9 +431,37 @@
       window.speechSynthesis.speak(u);
     } catch(e){}
   }
-  function starKey(en){ return "wj_star_" + en; }
+  /* List 1 keeps its original key so stars saved before the split are not lost. */
+  function starKey(en){ return "wj_star_" + (activeSet === "u1" ? "" : activeSet + "_") + en; }
   function getStar(en){ try{ return localStorage.getItem(starKey(en)) === "1"; }catch(e){ return false; } }
   function setStar(en, v){ try{ localStorage.setItem(starKey(en), v ? "1" : "0"); }catch(e){} }
+
+  /* ---------- word-list tabs ---------- */
+  var setsBar = document.getElementById("sets");
+  var unitTag = document.getElementById("unitTag");
+  Object.keys(SETS).forEach(function(key){
+    var b = document.createElement("button");
+    b.className = "set-tab";
+    b.setAttribute("role", "tab");
+    b.setAttribute("aria-selected", key === activeSet ? "true" : "false");
+    b.dataset.set = key;
+    b.textContent = SETS[key].tab;
+    b.addEventListener("click", function(){
+      if (key === activeSet) return;
+      activeSet = key;
+      WORDS = SETS[key].words;
+      try{ localStorage.setItem("wj_set", key); }catch(e){}
+      document.querySelectorAll(".set-tab").forEach(function(o){ o.setAttribute("aria-selected", o === b ? "true" : "false"); });
+      unitTag.textContent = SETS[key].tag;
+      activeCat = "all";
+      document.querySelectorAll(".chip").forEach(function(c){ c.setAttribute("aria-pressed", c.dataset.cat === "all" ? "true" : "false"); });
+      renderFlash();
+      startMatch();
+      startQuiz();
+    });
+    setsBar.appendChild(b);
+  });
+  unitTag.textContent = SETS[activeSet].tag;
 
   /* ---------- tabs ---------- */
   var tabs = document.querySelectorAll(".tab");
@@ -396,6 +482,7 @@
   Object.keys(CATS).forEach(function(key){
     var b = document.createElement("button");
     b.className = "chip";
+    b.dataset.cat = key;
     b.setAttribute("aria-pressed", key === "all" ? "true" : "false");
     if (CATS[key].c) b.style.setProperty("--c", CATS[key].c);
     b.innerHTML = '<span class="dot"></span>' + CATS[key].label;
@@ -611,7 +698,6 @@
     var right = chosen === correctAnswer;
     qzState.results[qzState.i] = right;
     if (right) qzState.correct++;
-    else qzState.reviewMiss = qzState.reviewMiss || [];
 
     Array.prototype.forEach.call(qzOptions.querySelectorAll(".qz-opt"), function(b){
       b.disabled = true;
@@ -619,7 +705,6 @@
       if (isThisCorrect) b.classList.add("correct");
       else if (b === btn) b.classList.add("incorrect");
     });
-    if (!right) qzState.results.miss = qzState.results.miss || [];
     renderDots();
     qzNext.hidden = false;
     qzNext.textContent = (qzState.i === qzState.qs.length - 1) ? "לתוצאות ←" : "הבא ←";
