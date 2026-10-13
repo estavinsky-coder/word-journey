@@ -192,6 +192,24 @@
   .pr-end .big{ font-size:40px; }
   .pr-end p{ margin:6px 0 0; color:var(--ink-soft); }
 
+  /* ---------- countable / uncountable ---------- */
+  .kinds-title{ margin:20px 0 10px; font-size:19px; }
+  .kinds{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media (max-width:640px){ .kinds{ grid-template-columns:1fr; } }
+  .kind{ background:var(--surface-2); border-radius:14px; padding:14px; text-align:center; }
+  .kind-ic{ font-size:28px; letter-spacing:2px; }
+  .kind h4{ margin:6px 0 4px; font-size:18px; }
+  .kind p{ margin:0 0 10px; font-size:15.5px; color:var(--ink-soft); line-height:1.5; }
+  .kind-ex{ font-size:19px; font-weight:600; }
+  .kind-ex b{ color:var(--c); font-size:22px; }
+  .kind-he{ font-size:14.5px; color:var(--ink-soft); margin-top:2px; }
+  .warn-line{ text-align:left; font-size:18px; margin:6px 0; }
+  .kinds-table{ width:100%; border-collapse:separate; border-spacing:5px; text-align:center; }
+  .kinds-table th{ font-weight:700; font-size:15.5px; padding:8px 4px; }
+  .kinds-table tbody th{ text-align:right; }
+  .kinds-table td{ background:var(--surface-2); border-radius:10px; padding:12px 6px; font-size:19px; font-weight:600; color:var(--c); }
+  @media (max-width:480px){ .kinds-table th{ font-size:14px; } .kinds-table td{ font-size:16.5px; padding:10px 4px; } }
+
   /* ---------- about me ---------- */
   .model{ display:grid; gap:6px; }
   .model-row{
@@ -386,8 +404,41 @@
           <div class="rule-row"><span class="who">משפט רגיל 😊</span><span class="arrow">→</span><span class="verb">some</span></div>
           <div class="rule-row"><span class="who">שאלה ❓ או שלילה ✋</span><span class="arrow">→</span><span class="verb">any</span></div>
         </div>
-        <div class="trick">💡 <b>לזכור:</b> <span class="en">some</span> = שמח ורגיל. <span class="en">any</span> = שואל או אומר "לא".<br>
-          שניהם הולכים עם הרבה דברים (<span class="en">apples, books</span>) ועם דברים שלא סופרים (<span class="en">water, tea, sugar</span>).</div>
+        <div class="trick">💡 <b>לזכור:</b> <span class="en">some</span> = משפט רגיל 😊 &nbsp;·&nbsp; <span class="en">any</span> = שאלה ❓ או משפט עם "לא" ✋</div>
+
+        <h3 class="kinds-title">עם אילו מילים משתמשים ב־<span class="en">some</span> וב־<span class="en">any</span>?</h3>
+        <div class="kinds">
+          <div class="kind">
+            <div class="kind-ic">🍎🍎🍎</div>
+            <h4>הרבה דברים שאפשר לספור</h4>
+            <p>סופרים אותם: אחד, שניים, שלושה…<br>בסוף המילה יש <b class="en">s</b>.</p>
+            <div class="kind-ex en">some apple<b>s</b> · some book<b>s</b></div>
+            <div class="kind-he">כמה תפוחים · כמה ספרים</div>
+          </div>
+          <div class="kind">
+            <div class="kind-ic">💧☕🧂</div>
+            <h4>דברים שלא סופרים</h4>
+            <p>לא אומרים "שני מים" או "שלושה סוכרים".<br>אין <b class="en">s</b> בסוף.</p>
+            <div class="kind-ex en">some water · some tea · some sugar</div>
+            <div class="kind-he">קצת מים · קצת תה · קצת סוכר</div>
+          </div>
+        </div>
+        <div class="trick" style="--c:var(--soft-bad)">⚠️ <b>ומה עם <span class="en">a / an</span>?</b> הם רק ל<b>דבר אחד</b> שאפשר לספור.
+          <div class="en warn-line">✓ &nbsp;a book &nbsp;·&nbsp; an apple</div>
+          <div class="en warn-line">✗ &nbsp;<s>a water</s> &nbsp;·&nbsp; <s>a books</s></div>
+          במקום זה משתמשים ב־<span class="en">some</span> או ב־<span class="en">any</span>.</div>
+
+        <h3 class="kinds-title">הכל בטבלה אחת</h3>
+        <table class="kinds-table">
+          <thead>
+            <tr><th></th><th>משפט רגיל 😊</th><th>שאלה ❓ או "לא" ✋</th></tr>
+          </thead>
+          <tbody>
+            <tr><th>דבר אחד 🍎</th><td class="en">a book</td><td class="en">a book</td></tr>
+            <tr><th>הרבה דברים 🍎🍎🍎</th><td class="en">some books</td><td class="en">any books</td></tr>
+            <tr><th>לא סופרים 💧</th><td class="en">some water</td><td class="en">any water</td></tr>
+          </tbody>
+        </table>
         <div class="two" style="margin-top:12px">
           <div class="form">
             <h3><span class="en">some</span></h3>
