@@ -18,7 +18,7 @@
     --verb:#C97C1F;        /* have / has */
     --adj:#3E6FA6;         /* a / an / some / any */
     --good:#2C6E63;
-    --soft-bad:#B9773A;
+    --soft-bad:#B9773A; --other:#7B5AA6; /* about me */
     --shadow: 0 1px 2px rgba(31,46,39,.06), 0 6px 20px -8px rgba(31,46,39,.18);
     color-scheme: light;
   }
@@ -35,7 +35,7 @@
       --verb:#E3A94A;
       --adj:#7AA6D9;
       --good:#59B39F;
-      --soft-bad:#E0A872;
+      --soft-bad:#E0A872; --other:#B79AE0;
       --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px -10px rgba(0,0,0,.55);
       color-scheme: dark;
     }
@@ -52,7 +52,7 @@
     --verb:#E3A94A;
     --adj:#7AA6D9;
     --good:#59B39F;
-    --soft-bad:#E0A872;
+    --soft-bad:#E0A872; --other:#B79AE0;
     --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px -10px rgba(0,0,0,.55);
     color-scheme: dark;
   }
@@ -127,11 +127,11 @@
   .form h3{ margin:0 0 4px; font-size:14px; }
   .form .how{ margin:0 0 10px; font-size:12.5px; color:var(--ink-soft); line-height:1.45; }
   .ex{
-    display:flex; align-items:center; gap:6px; width:100%; direction:ltr; text-align:left;
+    display:block; width:100%; direction:ltr; text-align:left; line-height:1.4;
     appearance:none; border:none; background:var(--surface); border-radius:8px; padding:7px 10px;
     margin-top:6px; cursor:pointer; color:var(--ink); font-family:'Fraunces',Georgia,serif; font-size:15.5px;
   }
-  .ex::before{ content:"🔊"; font-size:12px; opacity:.55; }
+  .ex::before{ content:"🔊"; font-size:12px; opacity:.55; margin-right:6px; }
   .ex:hover{ outline:1.5px solid var(--c); }
   .ex mark{ background:none; color:var(--c); font-weight:700; }
   .ex s{ color:var(--soft-bad); }
@@ -180,6 +180,43 @@
   .pr-end .big{ font-size:40px; }
   .pr-end p{ margin:6px 0 0; color:var(--ink-soft); }
 
+  /* ---------- about me ---------- */
+  .model{ display:grid; gap:6px; }
+  .model-row{
+    display:grid; grid-template-columns:1.3fr 1fr auto; align-items:center; gap:10px;
+    background:var(--surface-2); border-radius:10px; padding:6px 10px 6px 6px;
+  }
+  @media (max-width:640px){ .model-row{ grid-template-columns:1fr auto; } .model-row .he{ grid-column:1 / -1; grid-row:2; } }
+  .model-row .ex{ margin:0; }
+  .model-row .he{ font-size:14px; }
+  .model-row .what{
+    font-size:11.5px; font-weight:700; color:var(--c); background:color-mix(in srgb, var(--c) 12%, transparent);
+    padding:3px 9px; border-radius:100px; white-space:nowrap;
+  }
+  .build{ display:grid; gap:10px; }
+  .field{ background:var(--surface-2); border-radius:12px; padding:10px 12px; }
+  .field-line{
+    direction:ltr; display:flex; flex-wrap:wrap; align-items:center; gap:6px;
+    font-family:'Fraunces',Georgia,serif; font-size:17px;
+  }
+  .field-line input{
+    flex:1 1 140px; min-width:0; font-family:'Fraunces',Georgia,serif; font-size:17px; direction:ltr;
+    border:none; border-bottom:2px solid var(--c); background:var(--surface); color:var(--ink);
+    border-radius:6px 6px 0 0; padding:6px 8px;
+  }
+  .field-line input:focus{ outline:2px solid var(--c); outline-offset:1px; }
+  .sugg{ direction:ltr; display:flex; flex-wrap:wrap; gap:6px; margin-top:8px; }
+  .sugg button{
+    appearance:none; cursor:pointer; font-family:'Fraunces',Georgia,serif; font-size:13.5px;
+    border:1px solid var(--line); background:var(--surface); color:var(--ink); border-radius:100px; padding:4px 11px;
+  }
+  .sugg button:hover{ border-color:var(--c); color:var(--c); }
+  .preview{
+    margin-top:14px; border:2px dashed var(--c); border-radius:14px; padding:16px; direction:ltr; text-align:left;
+    font-family:'Fraunces',Georgia,serif; font-size:18px; line-height:1.7; min-height:60px;
+  }
+  .preview .empty{ direction:rtl; display:block; text-align:center; font-family:'Rubik',sans-serif; font-size:14px; color:var(--ink-soft); }
+
   @media (prefers-reduced-motion: reduce){ .pr-opt.try{ animation:none; } }
 </style>
 </head>
@@ -189,7 +226,7 @@
     <a class="back" href="index.html">→ חזרה למסע המילים</a>
     <div class="icon">🌱</div>
     <h1>חזרה על דקדוק</h1>
-    <p>שלושה נושאים קטנים. בכל נושא: כלל אחד לזכור, דוגמאות, ותרגול קצר.</p>
+    <p>ארבעה נושאים קטנים. בכל נושא: כלל אחד לזכור, דוגמאות, ותרגול קצר.</p>
     <span class="calm">אין שעון, אין ציון. מותר לטעות כמה שרוצים 🙂</span>
   </div>
 
@@ -197,6 +234,7 @@
     <button class="tab" role="tab" data-topic="be" style="--c:var(--accent)" aria-selected="true"><span class="en">am / is / are</span></button>
     <button class="tab" role="tab" data-topic="have" style="--c:var(--verb)" aria-selected="false"><span class="en">have / has</span></button>
     <button class="tab" role="tab" data-topic="art" style="--c:var(--adj)" aria-selected="false"><span class="en">a / an / some / any</span></button>
+    <button class="tab" role="tab" data-topic="me" style="--c:var(--other)" aria-selected="false">ספרו על עצמכם</button>
     <button class="tab" role="tab" data-topic="mix" style="--c:var(--ink-soft)" aria-selected="false">ערבוב של הכל</button>
   </div>
 
@@ -361,6 +399,43 @@
       </div>
     </section>
 
+    <!-- ================= about me ================= -->
+    <section data-view="me" style="--c:var(--other)" hidden>
+      <div class="card">
+        <h2><span class="step">1</span>מה זה?</h2>
+        <p style="margin:0 0 12px; line-height:1.6">זו פסקה שבה ילד מציג את עצמו. כנראה שבמבחן יבקשו לכתוב פסקה כזאת <b>על עצמכם</b>.
+          כל משפט מספר פרט אחד. משאירים את תחילת המשפט, ומחליפים רק את הפרט שלכם.</p>
+        <div class="model">
+          <div class="model-row"><button class="ex">My name is <mark>Dan</mark>.</button><span class="he">קוראים לי דן.</span><span class="what">שם</span></div>
+          <div class="model-row"><button class="ex">I am <mark>12</mark> years old.</button><span class="he">אני בן 12.</span><span class="what">גיל</span></div>
+          <div class="model-row"><button class="ex">I live in <mark>Meitar</mark>.</button><span class="he">אני גר במיתר.</span><span class="what">איפה גרים</span></div>
+          <div class="model-row"><button class="ex">I have <mark>one brother and one sister</mark>.</button><span class="he">יש לי אח אחד ואחות אחת.</span><span class="what">משפחה</span></div>
+          <div class="model-row"><button class="ex">I have <mark>a dog</mark>. Its name is <mark>Oscar</mark>.</button><span class="he">יש לי כלב. קוראים לו אוסקר.</span><span class="what">חיית מחמד</span></div>
+          <div class="model-row"><button class="ex">I like to <mark>play football</mark> and to <mark>play computer games</mark>.</button><span class="he">אני אוהב לשחק כדורגל ומשחקי מחשב.</span><span class="what">תחביב</span></div>
+          <div class="model-row"><button class="ex">My favorite food is <mark>sushi</mark>.</button><span class="he">האוכל האהוב עליי הוא סושי.</span><span class="what">אוכל</span></div>
+          <div class="model-row"><button class="ex">My favorite color is <mark>blue</mark>.</button><span class="he">הצבע האהוב עליי הוא כחול.</span><span class="what">צבע</span></div>
+        </div>
+        <div class="trick">✨ <b>שימו לב:</b> בפסקה הזאת יש בדיוק את מה שלמדנו!
+          <div class="en" style="margin-top:6px">I <b>am</b> · My name <b>is</b> · I <b>have</b> <b>a</b> dog</div></div>
+        <p class="tap-note">אפשר ללחוץ על משפט כדי לשמוע אותו.</p>
+      </div>
+
+      <div class="card">
+        <h2><span class="step">2</span>עכשיו כתבו על עצמכם</h2>
+        <p style="margin:0 0 12px; font-size:14px; color:var(--ink-soft)">כתבו באנגלית, או לחצו על אחת ההצעות. אם אין לכם אחים או חיה, השאירו ריק.</p>
+        <div class="build" id="build"></div>
+        <div class="preview" id="preview"></div>
+        <div class="pr-actions">
+          <button class="btn" id="hearMe" type="button">🔊 הקשיבו לפסקה</button>
+          <button class="btn ghost" id="clearMe" type="button">ניקוי</button>
+        </div>
+      </div>
+
+      <div class="card practice" data-set="me">
+        <h2><span class="step">3</span>תרגול קטן</h2>
+      </div>
+    </section>
+
     <!-- ================= mix ================= -->
     <section data-view="mix" style="--c:var(--accent)" hidden>
       <div class="card practice" data-set="mix">
@@ -412,7 +487,18 @@
       {q:"We don't have ___ ice cream at home.", a:["any","some"], why:"שלילה (don't) → any"}
     ]
   };
-  var TOPIC_COLOR = { be:"var(--accent)", have:"var(--verb)", art:"var(--adj)" };
+  QUESTIONS.me = [
+    {q:"My name ___ Dan.", a:["is","am","are"], why:"My name = It → is"},
+    {q:"I ___ 12 years old.", a:["am","is","have"], why:"I → am"},
+    {q:"I am 12 ___ old.", a:["years","year"], why:"12 זה הרבה שנים → years"},
+    {q:"I ___ in Meitar.", a:["live","lives"], why:"I → live (בלי s)"},
+    {q:"I ___ one brother and one sister.", a:["have","has","am"], why:"I → have"},
+    {q:"I have ___ dog.", a:["a","an"], why:"d היא לא a e i o u → a"},
+    {q:"I ___ to play football.", a:["like","likes"], why:"I → like (בלי s)"},
+    {q:"My favorite food ___ sushi.", a:["is","am","are"], why:"My favorite food = It → is"},
+    {q:"My favorite color ___ blue.", a:["is","are"], why:"My favorite color = It → is"}
+  ];
+  var TOPIC_COLOR = { be:"var(--accent)", have:"var(--verb)", art:"var(--adj)", me:"var(--other)" };
   var CHEERS = ["נכון! 🎉", "מעולה! ⭐", "יפה מאוד! 👏", "בדיוק! 💪", "כל הכבוד! 🌟"];
 
   function shuffle(arr){
@@ -456,6 +542,7 @@
     if (has("don't have")) return ["I / You / We / They → don't have · He / She / It → doesn't have", "ltr"];
     if (topic === "have") return ["I / You / We / They → have · He / She / It → has", "ltr"];
     if (has("an")) return ["a e i o u → an · other letters → a", "ltr"];
+    if (topic === "me") return ["I → am / have / live / like · My … → is", "ltr"];
     return ["some = משפט רגיל 😊 · any = שאלה ❓ או שלילה ✋", "rtl"];
   }
 
@@ -572,6 +659,83 @@
     start();
   }
   document.querySelectorAll(".practice").forEach(function(card){ Practice(card); });
+
+  /* ---------- write about yourself ---------- */
+  /* pre/post wrap the input; sugg are tap-to-fill ideas; lines with an empty field are skipped */
+  var FIELDS = [
+    {id:"name",  pre:"My name is",          post:".", ph:"Dan"},
+    {id:"age",   pre:"I am",                post:"years old.", ph:"12"},
+    {id:"city",  pre:"I live in",           post:".", ph:"Meitar"},
+    {id:"fam",   pre:"I have",              post:".", ph:"one brother and one sister",
+      sugg:["one brother","one sister","one brother and one sister","two brothers","two sisters"]},
+    {id:"pet",   pre:"I have",              post:".", ph:"a dog", sugg:["a dog","a cat","a fish","a bird","a rabbit"]},
+    {id:"petn",  pre:"Its name is",         post:".", ph:"Oscar"},
+    {id:"like",  pre:"I like to",           post:".", ph:"play football",
+      sugg:["play football","play basketball","play computer games","read books","draw","dance","swim"]},
+    {id:"food",  pre:"My favorite food is", post:".", ph:"sushi", sugg:["pizza","pasta","sushi","schnitzel","falafel","ice cream"]},
+    {id:"color", pre:"My favorite color is",post:".", ph:"blue", sugg:["blue","red","green","pink","purple","yellow","black"]}
+  ];
+  var build = document.getElementById("build");
+  var preview = document.getElementById("preview");
+  var inputs = {};
+
+  function loadMe(){ try{ return JSON.parse(localStorage.getItem("gr_me") || "{}") || {}; }catch(e){ return {}; } }
+  function saveMe(){
+    var data = {};
+    FIELDS.forEach(function(f){ data[f.id] = inputs[f.id].value; });
+    try{ localStorage.setItem("gr_me", JSON.stringify(data)); }catch(e){}
+  }
+  function paragraph(){
+    var out = [];
+    FIELDS.forEach(function(f){
+      var v = inputs[f.id].value.trim();
+      if (!v) return;
+      if (f.id === "petn" && !inputs.pet.value.trim()) return;
+      out.push(f.pre + " " + v + (f.post === "." ? "." : " " + f.post));
+    });
+    return out.join(" ");
+  }
+  function renderPreview(){
+    var p = paragraph();
+    preview.innerHTML = "";
+    if (p) preview.textContent = p;
+    else preview.appendChild(el("span", "empty", "הפסקה שלכם תופיע כאן ✍️"));
+  }
+
+  var savedMe = loadMe();
+  FIELDS.forEach(function(f){
+    var box = el("div", "field");
+    var line = el("div", "field-line");
+    line.appendChild(el("span", null, f.pre));
+    var inp = document.createElement("input");
+    inp.type = "text";
+    inp.placeholder = f.ph;
+    inp.value = savedMe[f.id] || "";
+    inp.setAttribute("aria-label", f.pre + " …");
+    inp.addEventListener("input", function(){ saveMe(); renderPreview(); });
+    inputs[f.id] = inp;
+    line.appendChild(inp);
+    line.appendChild(el("span", null, f.post));
+    box.appendChild(line);
+    if (f.sugg){
+      var s = el("div", "sugg");
+      f.sugg.forEach(function(word){
+        var b = el("button", null, word);
+        b.type = "button";
+        b.addEventListener("click", function(){ inp.value = word; saveMe(); renderPreview(); });
+        s.appendChild(b);
+      });
+      box.appendChild(s);
+    }
+    build.appendChild(box);
+  });
+  renderPreview();
+  document.getElementById("hearMe").addEventListener("click", function(){ var p = paragraph(); if (p) speak(p); });
+  document.getElementById("clearMe").addEventListener("click", function(){
+    FIELDS.forEach(function(f){ inputs[f.id].value = ""; });
+    saveMe();
+    renderPreview();
+  });
 })();
 </script>
 </body>
