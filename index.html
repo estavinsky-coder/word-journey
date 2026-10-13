@@ -214,6 +214,7 @@
   .mg-card.matched{ background:color-mix(in srgb, var(--good) 16%, var(--surface)); border-color:var(--good); color:var(--good); cursor:default; opacity:.85; }
   .mg-card.wrong{ border-color:var(--bad); animation:shake .3s; }
   .mg-card.hidden-word{ color:transparent; }
+  .mg-card.hidden-word span{ display:none; } /* hidden word must not push the 🧭 off-centre */
   .mg-card.hidden-word::after{ content:"🧭"; color:var(--ink-soft); font-size:20px; }
   @keyframes shake{ 0%,100%{transform:translateX(0);} 25%{transform:translateX(-4px);} 75%{transform:translateX(4px);} }
   .mg-win{ margin-top:14px; text-align:center; color:var(--good); font-weight:700; font-size:15px; }

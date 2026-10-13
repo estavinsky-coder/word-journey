@@ -80,29 +80,44 @@
   }
 
   /* ---------- topic tabs ---------- */
-  /* each tab is a big tappable card, so it reads as "press me" */
+  /* one row of tabs on a shared underline, like folder tabs; stays at the top while scrolling */
   .tabs-title{ margin:0; font-size:18px; font-weight:700; color:var(--ink-soft); }
   .tabs{
-    width:100%; max-width:820px; display:grid; grid-template-columns:repeat(5,1fr); gap:10px;
+    position:sticky; top:0; z-index:10; width:100%; max-width:820px;
+    display:grid; grid-template-columns:repeat(5,1fr); gap:6px; align-items:end;
+    padding-top:8px; background:var(--bg); border-bottom:3px solid var(--line);
   }
-  @media (max-width:760px){ .tabs{ grid-template-columns:repeat(2,1fr); } .tab[data-topic="mix"]{ grid-column:1 / -1; } }
   .tab{
-    appearance:none; cursor:pointer; font-family:inherit; color:var(--ink);
-    background:var(--surface); border:2px solid color-mix(in srgb, var(--c) 45%, var(--line));
-    border-bottom-width:5px; border-radius:16px; padding:14px 8px 12px; box-shadow:var(--shadow);
-    display:flex; flex-direction:column; align-items:center; gap:4px; text-align:center;
-    transition:transform .12s, background .15s, border-color .15s;
+    appearance:none; cursor:pointer; font-family:inherit; color:var(--ink-soft);
+    background:var(--surface); border:1.5px solid var(--line); border-bottom:none;
+    border-radius:14px 14px 0 0; padding:10px 6px; margin-bottom:-3px;
+    display:flex; align-items:center; justify-content:center; gap:7px; min-height:58px;
+    border-top:4px solid color-mix(in srgb, var(--c) 55%, var(--line));
+    transition:background .15s, color .15s;
   }
-  .tab .ic{ font-size:32px; line-height:1; }
-  .tab .name{ font-size:22px; font-weight:700; line-height:1.25; }
-  .tab .sub{ font-size:16px; font-weight:500; color:var(--ink-soft); }
-  @media (max-width:760px){ .tab .name{ font-size:20px; } .tab .sub{ font-size:15px; } }
-  .tab:hover{ transform:translateY(-3px); border-color:var(--c); }
-  .tab:active{ transform:translateY(0); }
-  .tab[aria-selected="true"]{ background:var(--c); border-color:var(--c); color:var(--accent-ink); transform:translateY(-3px); }
-  .tab[aria-selected="true"] .sub{ color:var(--accent-ink); opacity:.9; }
-  .tab:focus-visible{ outline:3px solid var(--c); outline-offset:3px; }
-  @media (prefers-reduced-motion: reduce){ .tab, .tab:hover, .tab[aria-selected="true"]{ transform:none; transition:none; } }
+  .tab .ic{ font-size:22px; line-height:1; }
+  .tab .name{ font-size:17px; font-weight:700; line-height:1.2; white-space:nowrap; }
+  .tab .sub{ display:none; }
+  .tab .short{ display:none; }
+  .tab:hover{ color:var(--ink); background:color-mix(in srgb, var(--c) 8%, var(--surface)); }
+  .tab[aria-selected="true"]{
+    background:var(--c); border-color:var(--c); color:var(--accent-ink);
+    border-bottom:3px solid var(--c); min-height:64px;
+  }
+  .tab:focus-visible{ outline:3px solid var(--c); outline-offset:2px; }
+  @media (max-width:900px){ .tab .name{ font-size:15px; } .tab .ic{ font-size:19px; } .tab{ gap:5px; } }
+
+  /* phones: icon on top, short label under it */
+  @media (max-width:760px){
+    .tabs-title{ display:none; }
+    .tabs{ gap:3px; margin:0 -16px; width:calc(100% + 32px); padding:8px 8px 0; }
+    .tab{ flex-direction:column; gap:3px; padding:7px 2px 6px; min-height:56px; border-radius:12px 12px 0 0; }
+    .tab[aria-selected="true"]{ min-height:60px; }
+    .tab .ic{ font-size:21px; }
+    .tab .name{ display:none; }
+    .tab .short{ display:block; font-family:'Rubik',sans-serif; font-size:12px; font-weight:700; line-height:1.15; }
+  }
+  @media (prefers-reduced-motion: reduce){ .tab{ transition:none; } }
 
   /* ---------- cards ---------- */
   .card{
@@ -121,7 +136,11 @@
     display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:18px; direction:ltr;
     background:var(--surface-2); border-radius:12px; padding:12px 16px; font-size:22px;
   }
-  @media (max-width:480px){ .rule-row{ font-size:19px; gap:10px; padding:12px; } .rule-row .verb{ font-size:23px; } }
+  @media (max-width:480px){
+    .rule-row{ grid-template-columns:1.7fr auto 1fr; font-size:16.5px; gap:10px; padding:12px; }
+    .rule-row .who{ white-space:nowrap; }
+    .rule-row .verb{ font-size:23px; }
+  }
   .rule-row .who{ font-family:'Fraunces',Georgia,serif; font-weight:600; text-align:right; unicode-bidi:isolate; }
   .rule-row .arrow{ color:var(--ink-soft); }
   .rule-row .verb{ font-family:'Fraunces',Georgia,serif; font-weight:700; color:var(--c); font-size:26px; }
@@ -204,11 +223,17 @@
   .kind-ex b{ color:var(--c); font-size:22px; }
   .kind-he{ font-size:14.5px; color:var(--ink-soft); margin-top:2px; }
   .warn-line{ text-align:left; font-size:18px; margin:6px 0; }
+  .how-line{ text-align:left; font-size:15.5px; margin:0 0 4px; color:var(--ink-soft); }
+  .how-line b{ color:var(--c); }
+  .form .how-line:last-of-type{ margin-bottom:10px; }
+  /* keep short English bits and "ל־word" pairs on one line inside Hebrew text */
+  .trick span.en, .how span.en, .nw{ white-space:nowrap; }
   .kinds-table{ width:100%; border-collapse:separate; border-spacing:5px; text-align:center; }
   .kinds-table th{ font-weight:700; font-size:15.5px; padding:8px 4px; }
   .kinds-table tbody th{ text-align:right; }
   .kinds-table td{ background:var(--surface-2); border-radius:10px; padding:12px 6px; font-size:19px; font-weight:600; color:var(--c); }
-  @media (max-width:480px){ .kinds-table th{ font-size:14px; } .kinds-table td{ font-size:16.5px; padding:10px 4px; } }
+  .kinds-table td{ white-space:nowrap; }
+  @media (max-width:480px){ .kinds-table{ border-spacing:3px; } .kinds-table th{ font-size:13.5px; } .kinds-table td{ font-size:15px; padding:10px 3px; } }
 
   /* ---------- about me ---------- */
   .model{ display:grid; gap:6px; }
@@ -225,10 +250,12 @@
   }
   .build{ display:grid; gap:10px; }
   .field{ background:var(--surface-2); border-radius:12px; padding:10px 12px; }
+  /* same shape on every row: sentence start on top, then the box and the ending */
   .field-line{
-    direction:ltr; display:flex; flex-wrap:wrap; align-items:center; gap:6px;
+    direction:ltr; display:grid; grid-template-columns:1fr auto; align-items:center; gap:6px 8px;
     font-family:'Fraunces',Georgia,serif; font-size:19.5px;
   }
+  .field-line > span:first-child{ grid-column:1 / -1; font-weight:600; }
   .field-line input{
     flex:1 1 140px; min-width:0; font-family:'Fraunces',Georgia,serif; font-size:19.5px; direction:ltr;
     border:none; border-bottom:2px solid var(--c); background:var(--surface); color:var(--ink);
@@ -262,11 +289,11 @@
 
   <p class="tabs-title">👇 בחרו נושא</p>
   <div class="tabs" role="tablist" aria-label="נושאים">
-    <button class="tab" role="tab" data-topic="be" style="--c:var(--accent)" aria-selected="true"><span class="ic">🧍</span><span class="name en">am / is / are</span><span class="sub">להיות</span></button>
-    <button class="tab" role="tab" data-topic="have" style="--c:var(--verb)" aria-selected="false"><span class="ic">🎒</span><span class="name en">have / has</span><span class="sub">יש לי</span></button>
-    <button class="tab" role="tab" data-topic="art" style="--c:var(--adj)" aria-selected="false"><span class="ic">🍎</span><span class="name en">a / an / some / any</span><span class="sub">אחד / כמה</span></button>
-    <button class="tab" role="tab" data-topic="me" style="--c:var(--other)" aria-selected="false"><span class="ic">👋</span><span class="name">ספרו על עצמכם</span><span class="sub">פסקה עליי</span></button>
-    <button class="tab" role="tab" data-topic="mix" style="--c:var(--ink-soft)" aria-selected="false"><span class="ic">🎲</span><span class="name">ערבוב של הכל</span><span class="sub">כל הנושאים ביחד</span></button>
+    <button class="tab" role="tab" data-topic="be" style="--c:var(--accent)" aria-selected="true"><span class="ic">🧍</span><span class="name en">am / is / are</span><span class="sub">להיות</span><span class="short en">am/is/are</span></button>
+    <button class="tab" role="tab" data-topic="have" style="--c:var(--verb)" aria-selected="false"><span class="ic">🎒</span><span class="name en">have / has</span><span class="sub">יש לי</span><span class="short en">have/has</span></button>
+    <button class="tab" role="tab" data-topic="art" style="--c:var(--adj)" aria-selected="false"><span class="ic">🍎</span><span class="name en">a / an / some / any</span><span class="sub">אחד / כמה</span><span class="short en">a/an/some</span></button>
+    <button class="tab" role="tab" data-topic="me" style="--c:var(--other)" aria-selected="false"><span class="ic">👋</span><span class="name">ספרו על עצמכם</span><span class="sub">פסקה עליי</span><span class="short">עליי</span></button>
+    <button class="tab" role="tab" data-topic="mix" style="--c:var(--ink-soft)" aria-selected="false"><span class="ic">🎲</span><span class="name">ערבוב של הכל</span><span class="sub">כל הנושאים ביחד</span><span class="short">ערבוב</span></button>
   </div>
 
   <main>
@@ -279,7 +306,8 @@
           <div class="rule-row"><span class="who">He / She / It</span><span class="arrow">→</span><span class="verb">is</span></div>
           <div class="rule-row"><span class="who">We / You / They</span><span class="arrow">→</span><span class="verb">are</span></div>
         </div>
-        <div class="trick">🐍 <b>חבורת ה־S:</b> <span class="en">He, She, It</span> תמיד מקבלים <span class="en">S</span> בסוף הפועל: <span class="en">iS · haS · doeSn't</span></div>
+        <div class="trick">🐍 <b>חבורת ה־S:</b> אחרי <span class="en">He / She / It</span> יש S בסוף הפועל:
+          <div class="en warn-line">He i<b>s</b> &nbsp;·&nbsp; She ha<b>s</b> &nbsp;·&nbsp; It doe<b>s</b>n't</div></div>
       </div>
 
       <div class="card">
@@ -296,7 +324,9 @@
           </div>
           <div class="form">
             <h3>שלילה ✋</h3>
-            <p class="how">מוסיפים <span class="en">not</span> אחרי הפועל.<br><span class="en">is not = isn't · are not = aren't</span></p>
+            <p class="how">מוסיפים <span class="en">not</span> אחרי הפועל, ואפשר לקצר:</p>
+            <div class="en how-line">is not → <b>isn't</b></div>
+            <div class="en how-line">are not → <b>aren't</b></div>
             <button class="ex">I <mark>am not</mark> a boy.</button>
             <button class="ex">He <mark>isn't</mark> a girl.</button>
             <button class="ex">It <mark>isn't</mark> a cat.</button>
@@ -329,9 +359,11 @@
           <div class="rule-row"><span class="who">I / You / We / They</span><span class="arrow">→</span><span class="verb">have</span></div>
           <div class="rule-row"><span class="who">He / She / It</span><span class="arrow">→</span><span class="verb">has</span></div>
         </div>
-        <div class="trick">🐍 <b>שוב חבורת ה־S:</b> <span class="en">He, She, It</span> מקבלים <span class="en">S</span>: <span class="en">haS</span>.<br>
-          ⚠️ אבל ה־S קופץ <b>רק פעם אחת</b>. אם יש <span class="en">doesn't</span> או <span class="en">does</span>, חוזרים ל־<span class="en">have</span>.
-          <div class="en" style="margin-top:6px">He doesn't <b>have</b> ✓ &nbsp;&nbsp; <s>He doesn't has</s> ✗</div></div>
+        <div class="trick">🐍 <b>שוב חבורת ה־S:</b> אחרי <span class="en">He / She / It</span> אומרים <span class="en">has</span>
+          <div class="en warn-line">She ha<b>s</b> a nice house</div>
+          ⚠️ אבל ה־S מופיע <b>רק פעם אחת</b>. אם כבר יש <span class="en">does</span> או <span class="en">doesn't</span>, <span class="nw">חוזרים ל־<span class="en">have</span></span>
+          <div class="en warn-line">✓ &nbsp;He doesn't <b>have</b> a cat</div>
+          <div class="en warn-line">✗ &nbsp;<s>He doesn't has a cat</s></div></div>
       </div>
 
       <div class="card">
@@ -348,7 +380,9 @@
           </div>
           <div class="form">
             <h3>שלילה ✋</h3>
-            <p class="how"><span class="en">don't have</span> · ועם חבורת ה־S: <span class="en">doesn't have</span></p>
+            <p class="how">מוסיפים לפני <span class="en">have</span>:</p>
+            <div class="en how-line">I / You / We / They → <b>don't</b></div>
+            <div class="en how-line">He / She / It → <b>doesn't</b></div>
             <button class="ex">I <mark>don't have</mark> a dog.</button>
             <button class="ex">We <mark>don't have</mark> homework.</button>
             <button class="ex">He <mark>doesn't have</mark> a cat.</button>
@@ -356,7 +390,9 @@
           </div>
           <div class="form">
             <h3>שאלה ❓</h3>
-            <p class="how">מתחילים ב־<span class="en">Do</span> · ועם חבורת ה־S: <span class="en">Does</span></p>
+            <p class="how">מתחילים את השאלה ב:</p>
+            <div class="en how-line">I / You / We / They → <b>Do</b></div>
+            <div class="en how-line">He / She / It → <b>Does</b></div>
             <button class="ex"><mark>Do</mark> you <mark>have</mark> a ball?</button>
             <button class="ex"><mark>Do</mark> they <mark>have</mark> a test?</button>
             <button class="ex"><mark>Does</mark> she <mark>have</mark> a brother?</button>
@@ -374,12 +410,14 @@
     <!-- ================= a / an / some / any ================= -->
     <section data-view="art" style="--c:var(--adj)" hidden>
       <div class="card">
-        <h2><span class="step">1</span><span class="en">a</span> או <span class="en">an</span>? (לדבר אחד)</h2>
+        <h2><span class="step">1</span><span>מתי <span class="en">a</span> ומתי <span class="en">an</span>? (לדבר אחד)</span></h2>
         <div class="rule">
           <div class="rule-row"><span class="who">a e i o u</span><span class="arrow">→</span><span class="verb">an</span></div>
           <div class="rule-row"><span class="who">כל אות אחרת</span><span class="arrow">→</span><span class="verb">a</span></div>
         </div>
-        <div class="trick">👂 <b>טריק:</b> תגידו בקול. <span class="en">"a orange"</span> נשמע תקוע, <span class="en">"an orange"</span> זורם. ה־<span class="en">n</span> עוזר לחבר בין שתי תנועות.</div>
+        <div class="trick">👂 <b>טריק:</b> תגידו בקול ותשמעו מה זורם יותר:
+          <div class="en warn-line">✗ &nbsp;<s>a orange</s> &nbsp; 😖</div>
+          <div class="en warn-line">✓ &nbsp;an orange &nbsp; 😊</div></div>
         <div class="two" style="margin-top:12px">
           <div class="form">
             <h3><span class="en">a</span></h3>
@@ -399,12 +437,14 @@
       </div>
 
       <div class="card">
-        <h2><span class="step">2</span><span class="en">some</span> או <span class="en">any</span>? (כמה / קצת)</h2>
+        <h2><span class="step">2</span><span>מתי <span class="en">some</span> ומתי <span class="en">any</span>? (כמה / קצת)</span></h2>
         <div class="rule">
           <div class="rule-row"><span class="who">משפט רגיל 😊</span><span class="arrow">→</span><span class="verb">some</span></div>
           <div class="rule-row"><span class="who">שאלה ❓ או שלילה ✋</span><span class="arrow">→</span><span class="verb">any</span></div>
         </div>
-        <div class="trick">💡 <b>לזכור:</b> <span class="en">some</span> = משפט רגיל 😊 &nbsp;·&nbsp; <span class="en">any</span> = שאלה ❓ או משפט עם "לא" ✋</div>
+        <div class="trick">💡 <b>לזכור:</b><br>
+          😊 <b class="en">some</b> במשפט רגיל<br>
+          ❓✋ <b class="en">any</b> בשאלה או במשפט עם "לא"</div>
 
         <h3 class="kinds-title">עם אילו מילים משתמשים ב־<span class="en">some</span> וב־<span class="en">any</span>?</h3>
         <div class="kinds">
