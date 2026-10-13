@@ -80,17 +80,28 @@
   }
 
   /* ---------- topic tabs ---------- */
+  /* each tab is a big tappable card, so it reads as "press me" */
+  .tabs-title{ margin:0; font-size:15px; font-weight:700; color:var(--ink-soft); }
   .tabs{
-    display:flex; flex-wrap:wrap; justify-content:center; gap:6px; background:var(--surface);
-    border:1px solid var(--line); padding:5px; border-radius:14px; box-shadow:var(--shadow);
+    width:100%; max-width:820px; display:grid; grid-template-columns:repeat(5,1fr); gap:10px;
   }
+  @media (max-width:760px){ .tabs{ grid-template-columns:repeat(2,1fr); } .tab[data-topic="mix"]{ grid-column:1 / -1; } }
   .tab{
-    appearance:none; border:none; background:transparent; cursor:pointer; font-family:inherit;
-    font-size:14.5px; font-weight:600; color:var(--ink-soft); padding:9px 16px; border-radius:10px;
+    appearance:none; cursor:pointer; font-family:inherit; color:var(--ink);
+    background:var(--surface); border:2px solid color-mix(in srgb, var(--c) 45%, var(--line));
+    border-bottom-width:5px; border-radius:16px; padding:14px 8px 12px; box-shadow:var(--shadow);
+    display:flex; flex-direction:column; align-items:center; gap:4px; text-align:center;
+    transition:transform .12s, background .15s, border-color .15s;
   }
-  .tab:hover{ color:var(--ink); }
-  .tab[aria-selected="true"]{ background:var(--c,var(--accent)); color:var(--accent-ink); }
-  .tab:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+  .tab .ic{ font-size:28px; line-height:1; }
+  .tab .name{ font-size:18px; font-weight:700; line-height:1.25; }
+  .tab .sub{ font-size:13.5px; font-weight:500; color:var(--ink-soft); }
+  .tab:hover{ transform:translateY(-3px); border-color:var(--c); }
+  .tab:active{ transform:translateY(0); }
+  .tab[aria-selected="true"]{ background:var(--c); border-color:var(--c); color:var(--accent-ink); transform:translateY(-3px); }
+  .tab[aria-selected="true"] .sub{ color:var(--accent-ink); opacity:.9; }
+  .tab:focus-visible{ outline:3px solid var(--c); outline-offset:3px; }
+  @media (prefers-reduced-motion: reduce){ .tab, .tab:hover, .tab[aria-selected="true"]{ transform:none; transition:none; } }
 
   /* ---------- cards ---------- */
   .card{
@@ -230,12 +241,13 @@
     <span class="calm">אין שעון, אין ציון. מותר לטעות כמה שרוצים 🙂</span>
   </div>
 
+  <p class="tabs-title">👇 בחרו נושא</p>
   <div class="tabs" role="tablist" aria-label="נושאים">
-    <button class="tab" role="tab" data-topic="be" style="--c:var(--accent)" aria-selected="true"><span class="en">am / is / are</span></button>
-    <button class="tab" role="tab" data-topic="have" style="--c:var(--verb)" aria-selected="false"><span class="en">have / has</span></button>
-    <button class="tab" role="tab" data-topic="art" style="--c:var(--adj)" aria-selected="false"><span class="en">a / an / some / any</span></button>
-    <button class="tab" role="tab" data-topic="me" style="--c:var(--other)" aria-selected="false">ספרו על עצמכם</button>
-    <button class="tab" role="tab" data-topic="mix" style="--c:var(--ink-soft)" aria-selected="false">ערבוב של הכל</button>
+    <button class="tab" role="tab" data-topic="be" style="--c:var(--accent)" aria-selected="true"><span class="ic">🧍</span><span class="name en">am / is / are</span><span class="sub">להיות</span></button>
+    <button class="tab" role="tab" data-topic="have" style="--c:var(--verb)" aria-selected="false"><span class="ic">🎒</span><span class="name en">have / has</span><span class="sub">יש לי</span></button>
+    <button class="tab" role="tab" data-topic="art" style="--c:var(--adj)" aria-selected="false"><span class="ic">🍎</span><span class="name en">a / an / some / any</span><span class="sub">אחד / כמה</span></button>
+    <button class="tab" role="tab" data-topic="me" style="--c:var(--other)" aria-selected="false"><span class="ic">👋</span><span class="name">ספרו על עצמכם</span><span class="sub">פסקה עליי</span></button>
+    <button class="tab" role="tab" data-topic="mix" style="--c:var(--ink-soft)" aria-selected="false"><span class="ic">🎲</span><span class="name">ערבוב של הכל</span><span class="sub">כל הנושאים ביחד</span></button>
   </div>
 
   <main>
