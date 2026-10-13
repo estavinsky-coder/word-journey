@@ -88,6 +88,12 @@
     letter-spacing:-.01em; text-wrap:balance;
   }
   .head p{ margin:0; color:var(--ink-soft); font-size:14.5px; max-width:52ch; text-wrap:balance; }
+  .grammar-link{
+    margin-top:6px; font-size:14px; font-weight:600; color:var(--accent); text-decoration:none;
+    border:1.5px solid var(--accent); border-radius:100px; padding:7px 16px;
+  }
+  .grammar-link:hover{ background:color-mix(in srgb, var(--accent) 10%, transparent); }
+  .grammar-link .en{ font-size:13px; }
   .unit-tag{
     font-size:11.5px; font-weight:600; letter-spacing:.06em; text-transform:uppercase;
     color:var(--accent); background:color-mix(in srgb, var(--accent) 14%, transparent);
@@ -272,6 +278,7 @@
     <span class="unit-tag" id="unitTag">Unit 1 · A Typical Day</span>
     <h1>מסע המילים</h1>
     <p>תרגלו את מילות היחידה בשלושה תחנות: כרטיסיות, זיכרון וחידון. כל תחנה בדרך מקרבת אתכם לשליטה מלאה באוצר המילים.</p>
+    <a class="grammar-link" href="grammar.html">🌱 חזרה על דקדוק ←</a>
   </div>
 
   <div class="sets" id="sets" role="tablist" aria-label="רשימות מילים"></div>

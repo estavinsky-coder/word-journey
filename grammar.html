@@ -1,0 +1,578 @@
+<!doctype html>
+<html lang="he">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>חזרה על דקדוק</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700;800&family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&display=swap">
+<style>
+  :root{
+    --bg:#EEF1E5;
+    --surface:#FFFFFF;
+    --surface-2:#E4E9DA;
+    --ink:#1F2E27;
+    --ink-soft:#4B5A50;
+    --line:#CBD4C1;
+    --accent:#2C6E63;      /* am / is / are */
+    --accent-ink:#FFFFFF;
+    --verb:#C97C1F;        /* have / has */
+    --adj:#3E6FA6;         /* a / an / some / any */
+    --good:#2C6E63;
+    --soft-bad:#B9773A;
+    --shadow: 0 1px 2px rgba(31,46,39,.06), 0 6px 20px -8px rgba(31,46,39,.18);
+    color-scheme: light;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){
+      --bg:#101B15;
+      --surface:#182720;
+      --surface-2:#1F3128;
+      --ink:#EAF0E6;
+      --ink-soft:#AFC0B3;
+      --line:#2D4238;
+      --accent:#59B39F;
+      --accent-ink:#0B1712;
+      --verb:#E3A94A;
+      --adj:#7AA6D9;
+      --good:#59B39F;
+      --soft-bad:#E0A872;
+      --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px -10px rgba(0,0,0,.55);
+      color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --bg:#101B15;
+    --surface:#182720;
+    --surface-2:#1F3128;
+    --ink:#EAF0E6;
+    --ink-soft:#AFC0B3;
+    --line:#2D4238;
+    --accent:#59B39F;
+    --accent-ink:#0B1712;
+    --verb:#E3A94A;
+    --adj:#7AA6D9;
+    --good:#59B39F;
+    --soft-bad:#E0A872;
+    --shadow: 0 1px 2px rgba(0,0,0,.3), 0 10px 28px -10px rgba(0,0,0,.55);
+    color-scheme: dark;
+  }
+
+  *{box-sizing:border-box;}
+  body{background:var(--bg); margin:0;}
+  [hidden]{ display:none !important; }
+  .app{
+    direction:rtl; font-family:'Rubik',system-ui,sans-serif; color:var(--ink); background:var(--bg);
+    padding:22px 16px 60px; display:flex; flex-direction:column; align-items:center; gap:20px;
+  }
+  .en{ direction:ltr; unicode-bidi:isolate; font-family:'Fraunces',Georgia,serif; }
+  main{ width:100%; max-width:820px; display:flex; flex-direction:column; gap:16px; }
+
+  /* ---------- header ---------- */
+  .head{ width:100%; max-width:820px; display:flex; flex-direction:column; align-items:center; gap:6px; text-align:center; }
+  .head .icon{ font-size:34px; line-height:1; }
+  .head h1{ margin:0; font-size:clamp(24px,4vw,32px); font-weight:800; text-wrap:balance; }
+  .head p{ margin:0; color:var(--ink-soft); font-size:14.5px; max-width:52ch; text-wrap:balance; }
+  .back{ align-self:flex-start; font-size:13.5px; font-weight:600; color:var(--accent); text-decoration:none; }
+  .back:hover{ text-decoration:underline; }
+  .calm{
+    font-size:13px; font-weight:600; color:var(--good);
+    background:color-mix(in srgb, var(--good) 12%, transparent); padding:5px 14px; border-radius:100px;
+  }
+
+  /* ---------- topic tabs ---------- */
+  .tabs{
+    display:flex; flex-wrap:wrap; justify-content:center; gap:6px; background:var(--surface);
+    border:1px solid var(--line); padding:5px; border-radius:14px; box-shadow:var(--shadow);
+  }
+  .tab{
+    appearance:none; border:none; background:transparent; cursor:pointer; font-family:inherit;
+    font-size:14.5px; font-weight:600; color:var(--ink-soft); padding:9px 16px; border-radius:10px;
+  }
+  .tab:hover{ color:var(--ink); }
+  .tab[aria-selected="true"]{ background:var(--c,var(--accent)); color:var(--accent-ink); }
+  .tab:focus-visible{ outline:2px solid var(--accent); outline-offset:2px; }
+
+  /* ---------- cards ---------- */
+  .card{
+    background:var(--surface); border:1px solid var(--line); border-radius:16px; padding:20px;
+    box-shadow:var(--shadow);
+  }
+  .card h2{ margin:0 0 12px; font-size:18px; display:flex; align-items:center; gap:8px; }
+  .card h2 .step{
+    width:26px; height:26px; border-radius:50%; background:var(--c); color:var(--accent-ink);
+    display:inline-flex; align-items:center; justify-content:center; font-size:13px; flex:0 0 26px;
+  }
+
+  /* the one rule to remember */
+  .rule{ display:grid; gap:8px; }
+  .rule-row{
+    display:grid; grid-template-columns:1fr auto 1fr; align-items:center; gap:18px; direction:ltr;
+    background:var(--surface-2); border-radius:12px; padding:12px 16px; font-size:19px;
+  }
+  @media (max-width:480px){ .rule-row{ font-size:16px; gap:10px; padding:12px; } .rule-row .verb{ font-size:20px; } }
+  .rule-row .who{ font-family:'Fraunces',Georgia,serif; font-weight:600; text-align:right; unicode-bidi:isolate; }
+  .rule-row .arrow{ color:var(--ink-soft); }
+  .rule-row .verb{ font-family:'Fraunces',Georgia,serif; font-weight:700; color:var(--c); font-size:22px; }
+
+  .trick{
+    margin-top:14px; border-inline-start:4px solid var(--c); background:color-mix(in srgb, var(--c) 10%, var(--surface));
+    border-radius:10px; padding:12px 14px; font-size:15px; line-height:1.55;
+  }
+  .trick b{ color:var(--c); }
+
+  /* positive / negative / question columns */
+  .forms{ display:grid; grid-template-columns:repeat(3,1fr); gap:10px; }
+  @media (max-width:640px){ .forms{ grid-template-columns:1fr; } }
+  .form{ background:var(--surface-2); border-radius:12px; padding:12px; }
+  .form h3{ margin:0 0 4px; font-size:14px; }
+  .form .how{ margin:0 0 10px; font-size:12.5px; color:var(--ink-soft); line-height:1.45; }
+  .ex{
+    display:flex; align-items:center; gap:6px; width:100%; direction:ltr; text-align:left;
+    appearance:none; border:none; background:var(--surface); border-radius:8px; padding:7px 10px;
+    margin-top:6px; cursor:pointer; color:var(--ink); font-family:'Fraunces',Georgia,serif; font-size:15.5px;
+  }
+  .ex::before{ content:"🔊"; font-size:12px; opacity:.55; }
+  .ex:hover{ outline:1.5px solid var(--c); }
+  .ex mark{ background:none; color:var(--c); font-weight:700; }
+  .ex s{ color:var(--soft-bad); }
+  .tap-note{ margin:10px 0 0; font-size:12px; color:var(--ink-soft); }
+
+  .two{ display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  @media (max-width:640px){ .two{ grid-template-columns:1fr; } }
+
+  /* ---------- practice ---------- */
+  .pr-top{ display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; gap:10px; flex-wrap:wrap; }
+  .pr-dots{ display:flex; gap:5px; flex-wrap:wrap; }
+  .pr-dot{ width:9px; height:9px; border-radius:50%; background:var(--line); }
+  .pr-dot.done{ background:var(--good); }
+  .pr-dot.now{ background:var(--c); box-shadow:0 0 0 3px color-mix(in srgb, var(--c) 25%, transparent); }
+  .pr-count{ font-size:13px; color:var(--ink-soft); font-variant-numeric:tabular-nums; }
+  .pr-q{
+    direction:ltr; text-align:center; font-family:'Fraunces',Georgia,serif; font-size:24px; font-weight:600;
+    margin:6px 0 4px; line-height:1.4;
+  }
+  .pr-q .blank{
+    display:inline-block; min-width:80px; border-bottom:3px solid var(--c); color:var(--c); padding:0 6px;
+  }
+  .pr-hint-he{ text-align:center; font-size:13.5px; color:var(--ink-soft); margin:0 0 18px; min-height:1em; }
+  .pr-opts{ display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+  .pr-opt{
+    appearance:none; font-family:'Fraunces',Georgia,serif; direction:ltr; font-size:18px; font-weight:600;
+    min-width:110px; padding:12px 18px; border-radius:12px; border:1.5px solid var(--line);
+    background:var(--surface-2); color:var(--ink); cursor:pointer; transition:border-color .12s,background .12s;
+  }
+  .pr-opt:hover{ border-color:var(--c); }
+  .pr-opt.right{ background:color-mix(in srgb, var(--good) 20%, var(--surface-2)); border-color:var(--good); }
+  .pr-opt.try{ opacity:.45; animation:wobble .35s; }
+  .pr-opt:disabled{ cursor:default; }
+  @keyframes wobble{ 0%,100%{transform:translateX(0);} 30%{transform:translateX(-3px);} 70%{transform:translateX(3px);} }
+  .pr-msg{ text-align:center; margin:16px 0 0; font-size:15px; line-height:1.5; min-height:1.5em; }
+  .pr-msg.ok{ color:var(--good); font-weight:600; }
+  .pr-msg.again{ color:var(--soft-bad); }
+  .pr-why{ unicode-bidi:isolate; font-size:14px; font-weight:500; margin-top:4px; }
+  .pr-actions{ display:flex; justify-content:center; gap:10px; margin-top:14px; }
+  .btn{
+    font-family:inherit; font-size:14px; font-weight:700; border-radius:10px; padding:9px 20px; cursor:pointer;
+    border:none; background:var(--c,var(--accent)); color:var(--accent-ink);
+  }
+  .btn.ghost{ background:none; border:1px solid var(--line); color:var(--ink-soft); font-weight:600; }
+  .pr-end{ text-align:center; }
+  .pr-end .big{ font-size:40px; }
+  .pr-end p{ margin:6px 0 0; color:var(--ink-soft); }
+
+  @media (prefers-reduced-motion: reduce){ .pr-opt.try{ animation:none; } }
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="head">
+    <a class="back" href="index.html">→ חזרה למסע המילים</a>
+    <div class="icon">🌱</div>
+    <h1>חזרה על דקדוק</h1>
+    <p>שלושה נושאים קטנים. בכל נושא: כלל אחד לזכור, דוגמאות, ותרגול קצר.</p>
+    <span class="calm">אין שעון, אין ציון. מותר לטעות כמה שרוצים 🙂</span>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="נושאים">
+    <button class="tab" role="tab" data-topic="be" style="--c:var(--accent)" aria-selected="true"><span class="en">am / is / are</span></button>
+    <button class="tab" role="tab" data-topic="have" style="--c:var(--verb)" aria-selected="false"><span class="en">have / has</span></button>
+    <button class="tab" role="tab" data-topic="art" style="--c:var(--adj)" aria-selected="false"><span class="en">a / an / some / any</span></button>
+    <button class="tab" role="tab" data-topic="mix" style="--c:var(--ink-soft)" aria-selected="false">ערבוב של הכל</button>
+  </div>
+
+  <main>
+    <!-- ================= am / is / are ================= -->
+    <section data-view="be" style="--c:var(--accent)">
+      <div class="card">
+        <h2><span class="step">1</span>הכלל שצריך לזכור</h2>
+        <div class="rule">
+          <div class="rule-row"><span class="who">I</span><span class="arrow">→</span><span class="verb">am</span></div>
+          <div class="rule-row"><span class="who">He / She / It</span><span class="arrow">→</span><span class="verb">is</span></div>
+          <div class="rule-row"><span class="who">We / You / They</span><span class="arrow">→</span><span class="verb">are</span></div>
+        </div>
+        <div class="trick">🐍 <b>חבורת ה־S:</b> <span class="en">He, She, It</span> תמיד מקבלים <span class="en">S</span> בסוף הפועל: <span class="en">iS · haS · doeSn't</span></div>
+      </div>
+
+      <div class="card">
+        <h2><span class="step">2</span>שלוש צורות של משפט</h2>
+        <div class="forms">
+          <div class="form">
+            <h3>רגיל ✅</h3>
+            <p class="how">כמו בכלל.</p>
+            <button class="ex">I <mark>am</mark> a girl.</button>
+            <button class="ex">He <mark>is</mark> a boy.</button>
+            <button class="ex">It <mark>is</mark> a dog.</button>
+            <button class="ex">We <mark>are</mark> a family.</button>
+            <button class="ex">They <mark>are</mark> my friends.</button>
+          </div>
+          <div class="form">
+            <h3>שלילה ✋</h3>
+            <p class="how">מוסיפים <span class="en">not</span> אחרי הפועל.<br><span class="en">is not = isn't</span> · <span class="en">are not = aren't</span></p>
+            <button class="ex">I <mark>am not</mark> a boy.</button>
+            <button class="ex">He <mark>isn't</mark> a girl.</button>
+            <button class="ex">It <mark>isn't</mark> a cat.</button>
+            <button class="ex">We <mark>aren't</mark> pupils.</button>
+            <button class="ex">You <mark>aren't</mark> my dad.</button>
+          </div>
+          <div class="form">
+            <h3>שאלה ❓</h3>
+            <p class="how">הפועל קופץ להתחלה.</p>
+            <button class="ex"><mark>Am</mark> I a girl?</button>
+            <button class="ex"><mark>Is</mark> he a boy?</button>
+            <button class="ex"><mark>Is</mark> it a dog?</button>
+            <button class="ex"><mark>Are</mark> we a family?</button>
+            <button class="ex"><mark>Are</mark> they my friends?</button>
+          </div>
+        </div>
+        <p class="tap-note">אפשר ללחוץ על משפט כדי לשמוע אותו.</p>
+      </div>
+
+      <div class="card practice" data-set="be">
+        <h2><span class="step">3</span>תרגול קטן</h2>
+      </div>
+    </section>
+
+    <!-- ================= have / has ================= -->
+    <section data-view="have" style="--c:var(--verb)" hidden>
+      <div class="card">
+        <h2><span class="step">1</span>הכלל שצריך לזכור</h2>
+        <div class="rule">
+          <div class="rule-row"><span class="who">I / You / We / They</span><span class="arrow">→</span><span class="verb">have</span></div>
+          <div class="rule-row"><span class="who">He / She / It</span><span class="arrow">→</span><span class="verb">has</span></div>
+        </div>
+        <div class="trick">🐍 <b>שוב חבורת ה־S:</b> <span class="en">He, She, It</span> מקבלים <span class="en">S</span>: <span class="en">haS</span>.<br>
+          ⚠️ אבל ה־S קופץ <b>רק פעם אחת</b>. אם יש <span class="en">doesn't</span> או <span class="en">does</span>, חוזרים ל־<span class="en">have</span>.
+          <div class="en" style="margin-top:6px">He doesn't <b>have</b> ✓ &nbsp;&nbsp; <s>He doesn't has</s> ✗</div></div>
+      </div>
+
+      <div class="card">
+        <h2><span class="step">2</span>שלוש צורות של משפט</h2>
+        <div class="forms">
+          <div class="form">
+            <h3>רגיל ✅</h3>
+            <p class="how">כמו בכלל.</p>
+            <button class="ex">I <mark>have</mark> a dog.</button>
+            <button class="ex">We <mark>have</mark> a car.</button>
+            <button class="ex">You <mark>have</mark> a big family.</button>
+            <button class="ex">She <mark>has</mark> a nice house.</button>
+            <button class="ex">The dog <mark>has</mark> a long tail.</button>
+          </div>
+          <div class="form">
+            <h3>שלילה ✋</h3>
+            <p class="how"><span class="en">don't have</span> · ועם חבורת ה־S: <span class="en">doesn't have</span></p>
+            <button class="ex">I <mark>don't have</mark> a dog.</button>
+            <button class="ex">We <mark>don't have</mark> homework.</button>
+            <button class="ex">He <mark>doesn't have</mark> a cat.</button>
+            <button class="ex">She <mark>doesn't have</mark> blond hair.</button>
+          </div>
+          <div class="form">
+            <h3>שאלה ❓</h3>
+            <p class="how">מתחילים ב־<span class="en">Do</span> · ועם חבורת ה־S: <span class="en">Does</span></p>
+            <button class="ex"><mark>Do</mark> you <mark>have</mark> a ball?</button>
+            <button class="ex"><mark>Do</mark> they <mark>have</mark> a test?</button>
+            <button class="ex"><mark>Does</mark> she <mark>have</mark> a brother?</button>
+            <button class="ex"><mark>Does</mark> he <mark>have</mark> brown eyes?</button>
+          </div>
+        </div>
+        <p class="tap-note">אפשר ללחוץ על משפט כדי לשמוע אותו.</p>
+      </div>
+
+      <div class="card practice" data-set="have">
+        <h2><span class="step">3</span>תרגול קטן</h2>
+      </div>
+    </section>
+
+    <!-- ================= a / an / some / any ================= -->
+    <section data-view="art" style="--c:var(--adj)" hidden>
+      <div class="card">
+        <h2><span class="step">1</span><span class="en">a</span> או <span class="en">an</span>? (לדבר אחד)</h2>
+        <div class="rule">
+          <div class="rule-row"><span class="who">a e i o u</span><span class="arrow">→</span><span class="verb">an</span></div>
+          <div class="rule-row"><span class="who">כל אות אחרת</span><span class="arrow">→</span><span class="verb">a</span></div>
+        </div>
+        <div class="trick">👂 <b>טריק:</b> תגידו בקול. <span class="en">"a orange"</span> נשמע תקוע, <span class="en">"an orange"</span> זורם. ה־<span class="en">n</span> עוזר לחבר בין שתי תנועות.</div>
+        <div class="two" style="margin-top:12px">
+          <div class="form">
+            <h3><span class="en">a</span></h3>
+            <button class="ex"><mark>a</mark> boy</button>
+            <button class="ex"><mark>a</mark> girl</button>
+            <button class="ex"><mark>a</mark> dog</button>
+            <button class="ex"><mark>a</mark> ball</button>
+          </div>
+          <div class="form">
+            <h3><span class="en">an</span></h3>
+            <button class="ex"><mark>an</mark> orange</button>
+            <button class="ex"><mark>an</mark> apple</button>
+            <button class="ex"><mark>an</mark> egg</button>
+            <button class="ex"><mark>an</mark> umbrella</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h2><span class="step">2</span><span class="en">some</span> או <span class="en">any</span>? (כמה / קצת)</h2>
+        <div class="rule">
+          <div class="rule-row"><span class="who">משפט רגיל 😊</span><span class="arrow">→</span><span class="verb">some</span></div>
+          <div class="rule-row"><span class="who">שאלה ❓ או שלילה ✋</span><span class="arrow">→</span><span class="verb">any</span></div>
+        </div>
+        <div class="trick">💡 <b>לזכור:</b> <span class="en">some</span> = שמח ורגיל. <span class="en">any</span> = שואל או אומר "לא".<br>
+          שניהם הולכים עם הרבה דברים (<span class="en">apples, books</span>) ועם דברים שלא סופרים (<span class="en">water, tea, sugar</span>).</div>
+        <div class="two" style="margin-top:12px">
+          <div class="form">
+            <h3><span class="en">some</span></h3>
+            <button class="ex"><mark>Some</mark> oranges</button>
+            <button class="ex"><mark>Some</mark> books</button>
+            <button class="ex"><mark>Some</mark> water</button>
+            <button class="ex"><mark>Some</mark> sugar</button>
+          </div>
+          <div class="form">
+            <h3><span class="en">any</span></h3>
+            <button class="ex">Do you want <mark>any</mark> soup?</button>
+            <button class="ex">Do you have <mark>any</mark> interesting books?</button>
+            <button class="ex">I don't want <mark>any</mark> soup.</button>
+            <button class="ex">We don't have <mark>any</mark> ice cream at home.</button>
+          </div>
+        </div>
+        <p class="tap-note">אפשר ללחוץ על משפט כדי לשמוע אותו.</p>
+      </div>
+
+      <div class="card practice" data-set="art">
+        <h2><span class="step">3</span>תרגול קטן</h2>
+      </div>
+    </section>
+
+    <!-- ================= mix ================= -->
+    <section data-view="mix" style="--c:var(--accent)" hidden>
+      <div class="card practice" data-set="mix">
+        <h2>🎲 ערבוב של כל הנושאים</h2>
+      </div>
+    </section>
+  </main>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  /* q: sentence with ___ for the blank · a: right answer first, the page shuffles · why: shown after answering */
+  var QUESTIONS = {
+    be: [
+      {q:"I ___ a girl.", a:["am","is","are"], why:"I → am"},
+      {q:"He ___ a boy.", a:["is","am","are"], why:"He → is (חבורת ה־S)"},
+      {q:"It ___ a dog.", a:["is","are","am"], why:"It → is (חבורת ה־S)"},
+      {q:"We ___ a family.", a:["are","is","am"], why:"We → are"},
+      {q:"They ___ my friends.", a:["are","is","am"], why:"They → are"},
+      {q:"She ___ a pupil.", he:"(שלילה: היא לא תלמידה)", a:["isn't","aren't","am not"], why:"She → is → isn't"},
+      {q:"You ___ my dad.", he:"(שלילה: אתה לא אבא שלי)", a:["aren't","isn't"], why:"You → are → aren't"},
+      {q:"___ it a dog?", a:["Is","Are","Am"], why:"שאלה: הפועל קופץ להתחלה. It → Is"},
+      {q:"___ they my friends?", a:["Are","Is"], why:"שאלה: They → Are"},
+      {q:"___ I a girl?", a:["Am","Is","Are"], why:"שאלה: I → Am"}
+    ],
+    have: [
+      {q:"I ___ a dog.", a:["have","has"], why:"I → have"},
+      {q:"She ___ a nice house.", a:["has","have"], why:"She → has (חבורת ה־S)"},
+      {q:"They ___ a test.", a:["have","has"], why:"They → have"},
+      {q:"The dog ___ a long tail.", a:["has","have"], why:"The dog = It → has"},
+      {q:"He ___ brown eyes.", a:["has","have"], why:"He → has"},
+      {q:"We ___ homework.", he:"(שלילה: אין לנו שיעורי בית)", a:["don't have","doesn't have"], why:"We → don't have"},
+      {q:"He ___ a cat.", he:"(שלילה: אין לו חתול)", a:["doesn't have","doesn't has","don't have"], why:"He → doesn't have. ה־S כבר ב־doesn't, אז have"},
+      {q:"___ you have a ball?", a:["Do","Does"], why:"You → Do"},
+      {q:"___ she have a brother?", a:["Does","Do"], why:"She → Does (חבורת ה־S)"}
+    ],
+    art: [
+      {q:"___ boy", a:["a","an"], why:"b היא לא a e i o u → a"},
+      {q:"___ orange", a:["an","a"], why:"o היא תנועה → an"},
+      {q:"___ apple", a:["an","a"], why:"a היא תנועה → an"},
+      {q:"___ dog", a:["a","an"], why:"d היא לא a e i o u → a"},
+      {q:"___ egg", a:["an","a"], why:"e היא תנועה → an"},
+      {q:"I want ___ water.", a:["some","any"], why:"משפט רגיל → some"},
+      {q:"She has ___ books.", a:["some","any"], why:"משפט רגיל → some"},
+      {q:"Do you want ___ soup?", a:["any","some"], why:"שאלה → any"},
+      {q:"I don't want ___ soup.", a:["any","some"], why:"שלילה (don't) → any"},
+      {q:"We don't have ___ ice cream at home.", a:["any","some"], why:"שלילה (don't) → any"}
+    ]
+  };
+  var TOPIC_COLOR = { be:"var(--accent)", have:"var(--verb)", art:"var(--adj)" };
+  var CHEERS = ["נכון! 🎉", "מעולה! ⭐", "יפה מאוד! 👏", "בדיוק! 💪", "כל הכבוד! 🌟"];
+
+  function shuffle(arr){
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--){
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i]; a[i] = a[j]; a[j] = t;
+    }
+    return a;
+  }
+  function speak(text){
+    try{
+      if (!("speechSynthesis" in window)) return;
+      window.speechSynthesis.cancel();
+      var u = new SpeechSynthesisUtterance(text);
+      u.lang = "en-US";
+      u.rate = 0.85;
+      window.speechSynthesis.speak(u);
+    } catch(e){}
+  }
+  function el(tag, cls, text){
+    var e = document.createElement(tag);
+    if (cls) e.className = cls;
+    if (text != null) e.textContent = text;
+    return e;
+  }
+
+  /* Mixed Hebrew + English lines go in their own dir="auto" block so the words keep their order. */
+  function setMsg(msg, title, line, dir){
+    msg.innerHTML = "";
+    msg.appendChild(el("div", null, title));
+    var d = el("div", "pr-why", line);
+    d.setAttribute("dir", dir || "auto");
+    msg.appendChild(d);
+  }
+  /* After a wrong pick: show the topic rule again, not the answer. Returns [text, dir]. */
+  function tipFor(q, topic){
+    var has = function(w){ return q.a.indexOf(w) !== -1; };
+    if (topic === "be") return ["I → am · He / She / It → is · We / You / They → are", "ltr"];
+    if (has("Do")) return ["I / You / We / They → Do · He / She / It → Does", "ltr"];
+    if (has("don't have")) return ["I / You / We / They → don't have · He / She / It → doesn't have", "ltr"];
+    if (topic === "have") return ["I / You / We / They → have · He / She / It → has", "ltr"];
+    if (has("an")) return ["a e i o u → an · other letters → a", "ltr"];
+    return ["some = משפט רגיל 😊 · any = שאלה ❓ או שלילה ✋", "rtl"];
+  }
+
+  /* ---------- topic tabs ---------- */
+  var tabs = document.querySelectorAll(".tab");
+  var views = document.querySelectorAll("[data-view]");
+  tabs.forEach(function(t){
+    t.addEventListener("click", function(){
+      var topic = t.getAttribute("data-topic");
+      tabs.forEach(function(o){ o.setAttribute("aria-selected", o === t ? "true" : "false"); });
+      views.forEach(function(v){ v.hidden = v.getAttribute("data-view") !== topic; });
+      try{ localStorage.setItem("gr_topic", topic); }catch(e){}
+      window.scrollTo(0, 0);
+    });
+  });
+  try{
+    var saved = localStorage.getItem("gr_topic");
+    var savedTab = saved && document.querySelector('.tab[data-topic="' + saved + '"]');
+    if (savedTab) savedTab.click();
+  }catch(e){}
+
+  /* ---------- tap an example to hear it ---------- */
+  document.querySelectorAll(".ex").forEach(function(b){
+    b.addEventListener("click", function(){ speak(b.textContent); });
+  });
+
+  /* ---------- practice ---------- */
+  function questionsFor(set){
+    if (set !== "mix") return shuffle(QUESTIONS[set]).map(function(q){ return {q:q, topic:set}; });
+    var all = [];
+    Object.keys(QUESTIONS).forEach(function(topic){
+      shuffle(QUESTIONS[topic]).slice(0, 4).forEach(function(q){ all.push({q:q, topic:topic}); });
+    });
+    return shuffle(all);
+  }
+
+  function Practice(card){
+    var set = card.getAttribute("data-set");
+    var box = el("div");
+    card.appendChild(box);
+    var list, i;
+
+    function start(){ list = questionsFor(set); i = 0; show(); }
+
+    function show(){
+      box.innerHTML = "";
+      if (i >= list.length) return end();
+      var item = list[i], q = item.q;
+      box.style.setProperty("--c", TOPIC_COLOR[item.topic]);
+
+      var top = el("div", "pr-top");
+      var dots = el("div", "pr-dots");
+      list.forEach(function(_, k){ dots.appendChild(el("span", "pr-dot" + (k < i ? " done" : k === i ? " now" : ""))); });
+      top.appendChild(dots);
+      top.appendChild(el("span", "pr-count", "שאלה " + (i + 1) + " מתוך " + list.length));
+      box.appendChild(top);
+
+      var parts = q.q.split("___");
+      var qEl = el("div", "pr-q");
+      qEl.appendChild(document.createTextNode(parts[0]));
+      var blank = el("span", "blank", "?");
+      qEl.appendChild(blank);
+      qEl.appendChild(document.createTextNode(parts[1] || ""));
+      box.appendChild(qEl);
+      box.appendChild(el("p", "pr-hint-he", q.he || ""));
+
+      var opts = el("div", "pr-opts");
+      var msg = el("p", "pr-msg");
+      var actions = el("div", "pr-actions");
+      shuffle(q.a).forEach(function(opt){
+        var b = el("button", "pr-opt", opt);
+        b.type = "button";
+        b.addEventListener("click", function(){
+          if (opt === q.a[0]){
+            blank.textContent = opt;
+            b.classList.add("right");
+            opts.querySelectorAll(".pr-opt").forEach(function(o){ o.disabled = true; });
+            msg.className = "pr-msg ok";
+            setMsg(msg, CHEERS[Math.floor(Math.random() * CHEERS.length)], q.why);
+            speak(parts[0] + opt + (parts[1] || ""));
+            var next = el("button", "btn", i === list.length - 1 ? "סיום" : "הבא ←");
+            next.addEventListener("click", function(){ i++; show(); });
+            actions.innerHTML = "";
+            actions.appendChild(next);
+            next.focus();
+          } else {
+            b.classList.add("try");
+            b.disabled = true;
+            msg.className = "pr-msg again";
+            var tip = tipFor(q, item.topic);
+            setMsg(msg, "כמעט! נסו עוד פעם 🙂", tip[0], tip[1]);
+          }
+        });
+        opts.appendChild(b);
+      });
+      box.appendChild(opts);
+      box.appendChild(msg);
+      box.appendChild(actions);
+    }
+
+    function end(){
+      var wrap = el("div", "pr-end");
+      wrap.appendChild(el("div", "big", "🌟"));
+      wrap.appendChild(el("h3", null, "סיימת את כל השאלות!"));
+      wrap.appendChild(el("p", null, "רוצים עוד סיבוב? השאלות יופיעו בסדר אחר."));
+      var actions = el("div", "pr-actions");
+      var again = el("button", "btn", "עוד סיבוב");
+      again.addEventListener("click", start);
+      actions.appendChild(again);
+      wrap.appendChild(actions);
+      box.appendChild(wrap);
+    }
+
+    start();
+  }
+  document.querySelectorAll(".practice").forEach(function(card){ Practice(card); });
+})();
+</script>
+</body>
+</html>
