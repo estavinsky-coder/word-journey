@@ -451,31 +451,68 @@ function pickVoice() {
 }
 if (TTS) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 function clean(t) {
-  const d = document.createElement('div'); d.innerHTML = String(t).replace(/<span class="lab">([^<]*)<\/span>/g, ' $1: ').replace(/<br\s*\/?>|<\/(p|li|h\d|div)>/gi, '. ');
-  return d.textContent.replace(/[\p{Extended_Pictographic}️‍]/gu, '').replace(/[←→›>]/g, ', ').replace(/\s+/g, ' ').trim();
+  const d = document.createElement('div'); d.innerHTML = String(t).replace(/<span class="lab">([^<]*)<\/span>/g, ' $1: ').replace(/<\/span>/g, '</span> ').replace(/<p\b/g, ' <p').replace(/<br\s*\/?>|<\/(p|li|h\d|div)>/gi, '. ');
+  return d.textContent.replace(/[\p{Extended_Pictographic}️‍]/gu, '').replace(/[←→›>]/g, ', ').replace(/\s+/g, ' ').replace(/\s+([,?.!:])/g, '$1').replace(/,(\s*,)+/g, ',').trim();
+}
+// Every sentence is pre-recorded in a natural voice (audio/<hash>.mp3).
+// A sentence with no recording falls back to the phone's own voice.
+const AUDIO_DIR = 'audio/';
+const AUDIO = new Set(/*AUDIO_LIST*/["9614a715","eed3672f","036f922a","37fec78d","4788a6ef","d3b68c32","4df2e2b2","d02cd09a","2846d8cd","b8fc4bc7","c8114a47","56e4e36f","b6b28acb","ae95ad5c","8ab2debe","4fac625b","f96e18fb","95466236","d8bb68f1","002399aa","7c749696","57526d85","50b911e3","0e7b914c","2c957950","9df59a1e","508ba084","95ac3cf1","bb89d207","07e2fff8","ed234484","56fcf413","dfaa4c3c","83955cf7","7c86fffc","ceae0115","558f88d4","95d30a70","41e18d59","4722498b","72d735da","b5270738","38be69bb","e3b5d983","c0c13586","3da3ec0e","8d277ae9","d64ce1a8","469215c4","2bd96117","60c8975c","2a89e85a","92bb7066","a90f397f","a4c3c3a3","dd614de1","b48454f9","7b9d0f6c","cfe032cb","cbd99d27","a9fe3d32","679c7d4f","4b352f33","bee0406c","ac6615c8","d8987d89","ff8180f3","bd1dc75f","4ae4d411","6cb00ab2","94377128","efb8402a","3265b0de","0cbcf033","e141642f","af9be8fd","922f48f3","7290ed08","ad7e3dc1","ba646e12","9049c5d0","91503fba","26b1528f","385a5351","aa834980","67277545","6c295de3","56fe9da3","d29b1d57","d10d3c7b","5be02e55","cbbe0580","1e3f70c3","02ca114e","0f5ed3bc","47736334","133184d7","e3e78ff8","753af77f","e56a41fe","6d6428ed","597c8375","1acf0d19","7fcc7bc2","87a680c1","214ab0b8","32e06ff8","57541cf3","54347d4e","5e1c5ecd","440263c9","33b5dd94","4fa8f789","22b3b6a1","754eaa8a","18d11d56","714b7e18","b86ef8ce","d20e1b7e","f8712081","cc975a61","706380c3","5156e4b4","6f6d63c3","bf367f72","f6d32ed1","121a2166","07a26746","733067f9","e3c4dfe7","f6bfc72d","422c8468","2a22be52","147d8b02","4bc19f59","b3d1c757","29ae3dad","b3504362","42261f8f","9126b257","4d9bb31e","02fe7a66","d1a9d597","625aa324","5d301498","893d9175","60498372","5ccaee54","4533b4cb","614f932b","6e63873e","06f71c59","0f32aebf","6d77ea05","db1375e9","d0264813","4396c854","979b25a0","5f23e8f0","412f5596","a8627c94","3ddbb76e","1bad56ac","502eedae","8e66c9e5","fbfa0424","0e4289d4","faff770d","b42cb6a7","85535a34","16a4c578","e33f10ba","0dc29042","90b14085","05cab548","9dae9eb8","c7a26f01","d9fbb8c7","ce93a1bb","b0cf10da","8fba97bd","8045beb6","03827fd1","025adab7","938cd232","5387b81c","e8298cea","0f1b4994","b41cd778","92cbcd88","44daba7b","2685c7ea","70743116","96b186d8","daf1f8ca","46e431b3","40efda02","7f682de4","67187b91","e43f3487","7477d263","ac12d600","e2fb790f","2632ae97","8ddec783","2c59a724","9448170f","a1dd7134","605ca559","6adfcea1","fcb39d94","fc630bb7","c4169602","852ac4be","16b50626","b6fe0282","efa242d7","90799b38","8240ae52","06f80e49","3cafb1d1","decdec1d","bedf89e8","5332f20b","912b0e03","d173962a","512053d2","1f878d8f","dce223a0","5a8e283f","e45fbb5e","f82a0aca","d9d705c0","4c077c47","8f2120ba","7dbc4e36","84711d3e","2689ebb0","baa1b045","01137edb","28b5d44d","806fdddc","340ca71c","960cbe98","370cabd5","bdbf6d6c","360caa42","8b7770f4","20c175c0","26d1d189","fe59dc7d","e478742f","17a214be","b6b257f3","cd9d6689","649332fb","21ea2073","9c97ec99","b507a7f2","519f2e75","464c5fde","6c2cf3ad","7a081e20","64880f5b","f8c00a22","078de41f","d0ae8995","1b9683c0","1b0d4093","66a4a596","68750dff","f8bdf72d","c0015a6e","d30cc593","0094a42d","a63f0f0e","831e9163","d53815d8","d24f29ef","2dec9e5a","8be38bcf","8ef29b12","6733d49c","9360ca54","7117489b","8bd6b105","194b4502","32fa564b","853a0f5a","614cc8bf","7f05cabc","3d454ea0","cbe11617","74a2a468","8846d5cc","57563a47","06725430","481e6b0d","a7c69aad","b89f641f","f5badee3","14b563ec","6bd83353","41fc8571","51d60602","713506f3","b26eefdf","969660d0","1f5d977b","c8c6f0a6","4b58cbf3","b36ef172","c53f249c","329c4623","30c73ed8","90634b64","b46ef305","b55be2a7","da15b860","6274a6ce","c2a20d18","c1f77007","dbc4af59","ad6ee800","3a98eed2","553ec945","e58ff61a","ae6ee993","30d3b563","c78c3a94","07ed75d9","be414d3a","af6eeb26","50ace664","48cf9312","6e301d1d","f5530828","b06eecb9","0a3b85da","2bf55b59","10ae0bee","cf7b3d2c","b96efae4","1ad52111","ac5aa683","26657085","40714528","3b7a2401","ecaa84f7","dfab150e","ba6efc77","e9eb843e","b2ef63be","2d6aaeaa","8894a0ad","013a0d65","bbb01d12","d3a3b53d","5e297ac3","d2a3b3aa","833368fd","a05d2ce4","0c28215b","2869dac5","7d7d5b61","9b6f8fd1","d1a3b217","fc8588d3","c60bf9f2","c40bf6cc","c20bf3a6","d10c0b43","340d67ee","97905669","d0a3b084","fc810ba5","c5ae7844","037ef0ca","cfa3aef1","1deb2d6a","19e8e887","edec9063","cea3ad5e","68c22101","810a4e48","df86f6ba","c722e080","cda3abcb","cb67f9b9","1defd71f","aa155068","6f5b4f27","f4ff6db9","5f5ff741","cca3aa38","ff97012b","8fa748ec","3482052e","f718e053","faa9002b","ab14baa4","62a73f6c","cba3a8a5","f6910dbe","b3f075f7","2f767727","56d2c8ee","b1f052be","caa3a712","18a8c359","358a235d","b9a5cae6","9725bdcc","0bb439fb","ee822872","3aae3fec","baa5cc79","0007bf76","e03ad307","3e42df73","8dd8af41","b7a5c7c0","bd99b0ae","2017c634","b4131b60","d83c2867","2c0b8ae7","b8a5c953","91728834","e46dde7f","d0a31ca7","5fb35415","bda5d132","d56f8cde","ef2c8e65","8b4eb2f9","997a21ae","8434a36f","d9f5064d","bea5d2c5","416a0e02","f74f4344","3bb347bc","6e0c889c","81896764","174536ee","db90fe1b","bb310716","23bd44c3","cb849ff9","cd0ac58f","246f5338","270d3d57","3f2ebd9c","7b3ce8b8","9d74038a","ce7164f4","62dc5337","d8227f1b","df979d5b","3fc6a025","831454f5","b8f73e59","5a660933","e7ead9b8","a7c11a36","39577b44","adf80115","efaec381","8fbef984","d0d6ebe7","6cc8b380","25dd2f9c","ae877553","58a3b9ae","e0b9b237","6a6aee54","c0309fd0","483c394d","41ed0d02","64ef8869","3d01d387","bc3489b5","4290ba8f","0ba11e85","50e5fd75","8553c8c7","f3797e9c","a2e41e17","6d4608b2","3102bca1","a19c8e23","e3b3f9b3","1727e002","e27dcbfd","75ca31d6","f86ed82b","4dbe1fcb","c5ac510a","a71b97b1","7124640c","3afd034b","e91b2dc4"]);
+const CAN_SPEAK = TTS || AUDIO.size > 0;
+function segs(t) {
+  return clean(t).replace(/([.!?:])\s+/g, '$1\u0000').split('\u0000').map(s => s.trim().replace(/[.,;]+$/, '').trim()).filter(s => /[֐-׿A-Za-z0-9]/.test(s));
+}
+function hashSeg(s) {
+  let h = 0x811c9dc5;
+  for (let i = 0; i < s.length; i++) { h ^= s.charCodeAt(i); h = Math.imul(h, 0x01000193) >>> 0; }
+  return ('0000000' + h.toString(16)).slice(-8);
+}
+let sayToken = 0;
+const player = new Audio(); player.preload = 'auto';
+function deviceSay(s, then) {
+  if (!TTS) { then(); return; }
+  try {
+    const u = new SpeechSynthesisUtterance(s);
+    u.lang = 'he-IL'; if (heVoice) u.voice = heVoice; u.rate = 0.95;
+    u.onend = then; u.onerror = then;
+    speechSynthesis.speak(u);
+  } catch (e) { then(); }
 }
 function speak(t) {
-  if (!TTS || !t) return;
-  try {
-    speechSynthesis.cancel();
-    const u = new SpeechSynthesisUtterance(clean(t));
-    u.lang = 'he-IL'; if (heVoice) u.voice = heVoice; u.rate = 0.95;
-    speechSynthesis.speak(u);
-  } catch (e) {}
+  if (!t) return;
+  hush();
+  const my = ++sayToken, list = segs(t);
+  if (window.__collect) list.forEach(s => window.__collect.add(s));
+  const next = i => {
+    if (my !== sayToken || i >= list.length) return;
+    const s = list[i], h = hashSeg(s);
+    let moved = false;
+    const go = () => { if (!moved) { moved = true; next(i + 1); } };
+    const fallback = () => { if (!moved && my === sayToken) deviceSay(s, go); };
+    if (!AUDIO.has(h)) { deviceSay(s, go); return; }
+    player.onended = go; player.onerror = fallback;
+    player.src = AUDIO_DIR + h + '.mp3';
+    const p = player.play(); if (p && p.catch) p.catch(fallback);
+  };
+  next(0);
 }
-function hush() { if (TTS) try { speechSynthesis.cancel(); } catch (e) {} }
+function hush() {
+  sayToken++;
+  try { player.pause(); } catch (e) {}
+  if (TTS) try { speechSynthesis.cancel(); } catch (e) {}
+}
 function setRead(t) { READ = t; if (S.tts) speak(t); }
-function sayBtn() { return TTS ? '<button class="ghost say" data-say aria-label="הקרא את המסך">🔈 הקרא</button>' : ''; }
+function sayBtn() { return CAN_SPEAK ? '<button class="ghost say" data-say aria-label="הקרא את המסך">🔈 הקרא</button>' : ''; }
 $('#ttsBtn').onclick = () => {
   S.tts = !S.tts; save(); renderBar();
   if (S.tts) {
     pickVoice();
-    if (voicesLoaded && !heVoice) toast('אין קול בעברית במכשיר הזה. ההקראה אולי לא תעבוד.');
+    if (!AUDIO.size && voicesLoaded && !heVoice) toast('אין קול בעברית במכשיר הזה. ההקראה אולי לא תעבוד.');
     else toast('הקראה הופעלה');
     speak(READ || 'הקראה הופעלה');
   } else { hush(); toast('הקראה כבויה'); }
 };
-if (!TTS) $('#ttsBtn').hidden = true;
+if (!CAN_SPEAK) $('#ttsBtn').hidden = true;
 
 /* ---------- content ---------- */
 const ORG = {
@@ -908,7 +945,7 @@ function rOrder(sl, el) {
   el.innerHTML = `<div class="qlabel">משחק סידור</div><h2>${sl.h}</h2><p style="margin:0">לחץ על המילים לפי הסדר: קודם הכי גדול.</p>
     <div class="order-ans">${correct.map((_, n) => `<span class="slot" data-n="${n}">${n + 1}</span>`).join('<span class="gt">←</span>')}</div>
     <div class="order-pool">${pool.map(x => `<button class="chip" data-v="${x}">${x}</button>`).join('')}</div><div class="fb" hidden></div>`;
-  setRead(sl.h + '. לחץ על המילים לפי הסדר, קודם הכי גדול: ' + pool.join(', '));
+  setRead(sl.h + '. לחץ על המילים לפי הסדר. קודם הכי גדול, ובסוף הכי קטן.');
   $$('.order-pool .chip', el).forEach(c => c.onclick = () => {
     if (c.dataset.v === correct[k]) {
       const s = $(`.slot[data-n="${k}"]`, el); s.textContent = c.dataset.v; s.classList.add('full'); c.remove(); k++; sfx('good');
