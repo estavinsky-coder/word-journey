@@ -30,7 +30,7 @@ body{
   background:var(--bg);
   background-image:radial-gradient(circle at 85% -10%, rgba(174,145,255,.18), transparent 45%),
                    radial-gradient(circle at 0% 100%, rgba(62,216,195,.12), transparent 40%);
-  color:var(--fg); font-family:var(--body); font-size:17px; line-height:1.6;
+  color:var(--fg); font-family:var(--body); font-size:18.5px; line-height:1.6;
 }
 .wrap{max-width:760px; margin:0 auto; padding-inline:16px; padding-block:0 64px}
 button{font:inherit; color:inherit; cursor:pointer; -webkit-tap-highlight-color:transparent; touch-action:manipulation}
@@ -78,7 +78,7 @@ b{color:var(--amber); font-weight:700}
 .mcard::after{content:""; position:absolute; inset:auto -30px -60px auto; width:140px; height:140px; border-radius:50%; background:var(--mc); opacity:.16; filter:blur(10px)}
 .mcard .tag{font-size:13px; color:var(--mc); font-weight:700; letter-spacing:.03em}
 .mcard h3{font-size:23px}
-.mcard p{margin:0; color:var(--muted); font-size:15px; grid-column:1}
+.mcard p{margin:0; color:var(--muted); font-size:17px; grid-column:1}
 .mcard .num{grid-row:1/span 3; grid-column:2; font-family:var(--display); font-size:54px; line-height:1; color:var(--mc); align-self:center; font-variant-numeric:tabular-nums}
 .mcard .meta{grid-column:1/-1; display:flex; justify-content:space-between; align-items:center; margin-top:8px; font-size:14px; color:var(--muted)}
 .stars{letter-spacing:2px; font-size:18px; color:var(--line)}
@@ -87,7 +87,7 @@ b{color:var(--amber); font-weight:700}
 .xcard{text-align:right; background:var(--bg2); border:1px dashed var(--line); border-radius:var(--r); padding:16px; display:flex; gap:12px; align-items:center}
 .xcard .emo{font-size:32px}
 .xcard h3{font-size:19px}
-.xcard p{margin:0; font-size:14px; color:var(--muted)}
+.xcard p{margin:0; font-size:16px; color:var(--muted)}
 
 /* lesson */
 .lesson-top{display:flex; gap:12px; align-items:center; justify-content:space-between; padding-block:8px}
@@ -104,20 +104,21 @@ b{color:var(--amber); font-weight:700}
 .art svg{width:100%; max-width:320px; height:auto}
 .art.sm svg{max-width:220px}
 .tip{background:linear-gradient(135deg,rgba(255,195,77,.14),rgba(255,143,199,.10)); border:1px solid rgba(255,195,77,.45); border-radius:16px; padding:12px 16px; display:grid; gap:4px}
-.tip > b:first-child{font-size:13px; letter-spacing:.04em}
-.qlabel{font-size:13px; font-weight:700; letter-spacing:.05em; color:var(--mc,var(--teal))}
-.lesson-nav{display:flex; justify-content:flex-start; margin-top:14px}
+.tip > b:first-child{font-size:15px; letter-spacing:.04em}
+.qlabel{font-size:15px; font-weight:700; letter-spacing:.05em; color:var(--mc,var(--teal))}
+.lesson-nav{display:flex; justify-content:space-between; gap:10px; margin-top:14px}
+.lesson-top{flex-wrap:wrap}
 .opts{display:grid; gap:10px}
-.opt{text-align:right; background:var(--bg2); border:2px solid var(--line); border-radius:14px; padding:13px 16px; font-size:17px; transition:transform .1s, border-color .2s, background .2s}
+.opt{text-align:right; background:var(--bg2); border:2px solid var(--line); border-radius:14px; padding:14px 16px; font-size:19px; transition:transform .1s, border-color .2s, background .2s}
 @media (hover:hover){.opt:hover:not(:disabled){border-color:var(--sky)}}
 .opt:disabled{cursor:default}
 .opt.right{border-color:var(--good); background:rgba(95,224,160,.16)}
 .opt.wrong{border-color:var(--bad); background:rgba(255,111,125,.12); animation:shake .35s}
 @keyframes shake{25%{transform:translateX(6px)}50%{transform:translateX(-6px)}75%{transform:translateX(3px)}}
-.fb{border-radius:14px; padding:12px 16px; font-size:16px}
+.fb{border-radius:14px; padding:12px 16px; font-size:18px}
 .fb.good{background:rgba(95,224,160,.13); border:1px solid rgba(95,224,160,.5)}
 .fb.bad{background:rgba(255,111,125,.11); border:1px solid rgba(255,111,125,.5)}
-.fb strong{display:block; font-size:17px}
+.fb strong{display:block; font-size:19px}
 .big-item{display:flex; flex-direction:column; align-items:center; gap:6px; padding-block:12px; font-family:var(--display); font-size:30px}
 .big-item .emo{font-size:52px; line-height:1}
 .bin{display:grid; grid-template-columns:1fr 1fr; gap:10px}
@@ -125,8 +126,27 @@ b{color:var(--amber); font-weight:700}
 .row-next{display:flex; justify-content:flex-start}
 
 /* reveal tiles */
-.tiles{display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:10px}
-.tile{perspective:800px; height:178px; background:none; border:0; padding:0}
+.tiles{display:grid; grid-template-columns:repeat(auto-fill,minmax(min(100%,300px),1fr)); gap:10px; align-items:start}
+.tile{display:block; width:100%; text-align:right; background:var(--bg2); border:2px solid var(--line); border-radius:16px; padding:12px 14px}
+.tile.open{border-color:var(--mc); background:var(--card2)}
+.tile-h{display:flex; align-items:center; gap:10px}
+.tile-h .emo{font-size:26px; line-height:1}
+.tile-h .nm{flex:1; font-weight:700; font-size:19px}
+.tile-h .tg{font-size:15px; color:var(--muted)}
+.tile-b{display:none; margin-top:6px}
+.tile.open .tile-b{display:block}
+/* definition / example / comparison boxes */
+.lab-box{display:block; border:1px solid; border-radius:14px; padding:10px 14px; margin-block:8px; text-align:right}
+.lab-box .lab{display:inline-block; font-size:14px; font-weight:800; letter-spacing:.03em; border-radius:999px; padding:1px 11px; margin-bottom:4px}
+.lab-box .lb-t{display:block}
+.lab-box.def{background:rgba(108,196,255,.08); border-color:rgba(108,196,255,.5)}
+.lab-box.def .lab{background:var(--sky); color:#0C1527}
+.lab-box.ex{background:rgba(255,122,107,.08); border-color:rgba(255,122,107,.55)}
+.lab-box.ex .lab{background:var(--coral); color:#2A0D08}
+.lab-box.cmp{background:rgba(174,145,255,.08); border-color:rgba(174,145,255,.5)}
+.lab-box.cmp .lab{background:var(--violet); color:#140B2E}
+.homebtn{white-space:nowrap; background:var(--card2); border:2px solid var(--sky); color:var(--fg); border-radius:12px; padding:8px 14px; font-weight:700; font-size:16px}
+.lesson-nav .btn:not(.primary){background:var(--card)}
 .tile-in{position:relative; width:100%; height:100%; transition:transform .5s; transform-style:preserve-3d}
 .tile.open .tile-in{transform:rotateY(180deg)}
 .face{position:absolute; inset:0; border-radius:16px; backface-visibility:hidden; -webkit-backface-visibility:hidden; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:6px; padding:10px; text-align:center}
@@ -136,12 +156,12 @@ b{color:var(--amber); font-weight:700}
 .face.front small{color:var(--muted); font-size:12px}
 .face.back{transform:rotateY(180deg); background:var(--card2); border:2px solid var(--mc); font-size:14.5px; line-height:1.45}
 .face.back .nm{font-weight:700; color:var(--mc); font-size:15px}
-.counter{font-size:14px; color:var(--muted)}
+.counter{font-size:16px; color:var(--muted)}
 
 /* cell explorer */
 .cell-wrap{display:grid; gap:12px}
 .toggle{display:inline-flex; background:var(--bg2); border:1px solid var(--line); border-radius:999px; padding:4px; justify-self:center}
-.toggle button{background:none; border:0; border-radius:999px; padding:7px 16px; font-weight:700; font-size:15px; color:var(--muted)}
+.toggle button{background:none; border:0; border-radius:999px; padding:8px 14px; font-weight:700; font-size:16px; color:var(--muted)}
 .toggle button.on{background:var(--card2); color:var(--fg)}
 .cellsvg{width:100%; max-width:440px; height:auto; justify-self:center; display:block; margin-inline:auto}
 .cellsvg .plant-only{display:none}
@@ -165,14 +185,14 @@ b{color:var(--amber); font-weight:700}
 .cellsvg .sel{filter:drop-shadow(0 0 6px #fff) brightness(1.3)}
 .cellsvg .hit.sel{stroke:rgba(255,255,255,.35)}
 .chips{display:flex; flex-wrap:wrap; gap:8px; justify-content:center}
-.chip{background:var(--bg2); border:2px solid var(--line); border-radius:999px; padding:6px 13px; font-size:15px}
+.chip{background:var(--bg2); border:2px solid var(--line); border-radius:999px; padding:8px 14px; font-size:17px}
 .chip.seen{border-color:var(--teal)}
 .chip.seen::before{content:"✓ "; color:var(--teal)}
 .chip.cur{background:var(--card2); border-color:var(--amber)}
 .info{background:var(--bg2); border:1px solid var(--line); border-radius:16px; padding:14px 16px; min-height:120px; display:grid; gap:6px; align-content:start}
 .info h3{font-size:22px}
 .info .city{color:var(--amber); font-weight:700}
-.info .where{justify-self:start; font-size:13px; border-radius:999px; padding:2px 10px; background:var(--card2)}
+.info .where{justify-self:start; font-size:15px; border-radius:999px; padding:2px 10px; background:var(--card2)}
 .info .where.plant{color:var(--leaf); border:1px solid var(--leaf)}
 .info .empty{color:var(--muted)}
 
@@ -180,12 +200,12 @@ b{color:var(--amber); font-weight:700}
 .compare{display:grid; grid-template-columns:1fr 1fr; gap:10px}
 .compare > div{background:var(--bg2); border-radius:14px; padding:12px; border:1px solid var(--line)}
 .compare h3{font-size:18px; margin-bottom:6px}
-.compare ul{margin:0; padding-inline-start:18px; font-size:15px}
+.compare ul{margin:0; padding-inline-start:18px; font-size:17px}
 .compare .pl{border-color:var(--leaf)}
 .compare .pl h3{color:var(--leaf)}
 
 /* zoom */
-.zoom-trail{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:14px; color:var(--muted)}
+.zoom-trail{display:flex; flex-wrap:wrap; gap:6px; align-items:center; font-size:16px; color:var(--muted)}
 .zoom-trail span.now{color:var(--fg); font-weight:700; background:var(--card2); border-radius:999px; padding:2px 10px}
 .zoom-stage{display:grid; gap:10px; justify-items:center; text-align:center; animation:zin .45s ease}
 @keyframes zin{from{transform:scale(.6)}to{transform:none}}
@@ -216,11 +236,11 @@ b{color:var(--amber); font-weight:700}
 
 /* order game */
 .order-ans{display:flex; flex-wrap:wrap; gap:6px; align-items:center}
-.slot{min-width:72px; min-height:42px; border:2px dashed var(--line); border-radius:12px; display:grid; place-items:center; color:var(--muted); padding:4px 10px; font-size:15px}
+.slot{min-width:64px; min-height:44px; border:2px dashed var(--line); border-radius:12px; display:grid; place-items:center; color:var(--muted); padding:4px 10px; font-size:17px}
 .slot.full{border-style:solid; border-color:var(--good); color:var(--fg); background:rgba(95,224,160,.12); font-weight:700}
 .gt{color:var(--muted)}
 .order-pool{display:flex; flex-wrap:wrap; gap:10px}
-.order-pool .chip{font-size:17px; padding:9px 18px}
+.order-pool .chip{font-size:19px; padding:10px 18px}
 .chip.shake{animation:shake .35s; border-color:var(--bad)}
 
 /* finish, boss, cards */
@@ -235,13 +255,13 @@ b{color:var(--amber); font-weight:700}
 .boss-top{display:flex; justify-content:space-between; align-items:center; gap:10px; padding-block:8px}
 .prog{height:8px; background:var(--card2); border-radius:9px; overflow:hidden}
 .prog i{display:block; height:100%; background:var(--coral); transition:width .4s}
-.fcard{perspective:1000px; height:260px; background:none; border:0; padding:0; width:100%}
+.fcard{perspective:1000px; height:300px; background:none; border:0; padding:0; width:100%}
 .fcard .tile-in{border-radius:22px}
 .fcard.open .tile-in{transform:rotateY(180deg)}
 .fcard .face{font-size:21px; padding:24px; border-radius:22px}
 .fcard .face.front{background:var(--card); font-family:var(--display); font-size:26px}
-.fcard .face.back{background:var(--card2); border-color:var(--teal); font-size:18px; line-height:1.55}
-.fcard small{font-family:var(--body); font-size:13px; color:var(--muted)}
+.fcard .face.back{background:var(--card2); border-color:var(--teal); font-size:20px; line-height:1.55}
+.fcard small{font-family:var(--body); font-size:16px; color:var(--muted)}
 
 /* plan */
 .days{display:grid; gap:10px}
@@ -249,7 +269,7 @@ b{color:var(--amber); font-weight:700}
 .day input{width:24px; height:24px; accent-color:var(--good); grid-row:1/span 2}
 .day .dname{font-weight:700}
 .day .dname small{color:var(--muted); font-weight:400}
-.day .what{color:var(--muted); font-size:15px}
+.day .what{color:var(--muted); font-size:17px}
 .day.test{border-color:var(--coral)}
 .day.checked{opacity:.65}
 .day.checked .dname{text-decoration:line-through}
@@ -271,14 +291,14 @@ details.parent ul{margin:10px 0 0; padding-inline-start:20px; display:grid; gap:
 .face .sb{height:.25em}
 
 @media (max-width:480px){
-  body{font-size:16px}
   .slide{padding:20px 16px}
+  .dots{order:3; flex-basis:100%; justify-content:flex-start}
   .compare{grid-template-columns:1fr}
-  .brand span{display:none}
+  .brand{display:none}
+  .xp{padding:4px 10px}
   .bar{gap:8px; position:static}
   .pill{padding:6px 10px}
   .xpbar{min-width:80px}
-  .tiles{grid-template-columns:1fr 1fr}
   .base{width:40px; height:46px; font-size:22px}
   .keys button{width:54px}
 }
@@ -431,7 +451,7 @@ function pickVoice() {
 }
 if (TTS) { pickVoice(); speechSynthesis.onvoiceschanged = pickVoice; }
 function clean(t) {
-  const d = document.createElement('div'); d.innerHTML = String(t).replace(/<br\s*\/?>|<\/(p|li|h\d|div)>/gi, '. ');
+  const d = document.createElement('div'); d.innerHTML = String(t).replace(/<span class="lab">([^<]*)<\/span>/g, ' $1: ').replace(/<br\s*\/?>|<\/(p|li|h\d|div)>/gi, '. ');
   return d.textContent.replace(/[\p{Extended_Pictographic}️‍]/gu, '').replace(/[←→›>]/g, ', ').replace(/\s+/g, ' ').trim();
 }
 function speak(t) {
@@ -460,7 +480,7 @@ if (!TTS) $('#ttsBtn').hidden = true;
 /* ---------- content ---------- */
 const ORG = {
   membrane: { name: 'קרום התא', icon: '🛂', city: 'השומר בשער', fn: 'שכבה דקה שעוטפת את התא. היא מחליטה מה נכנס (מזון, חמצן) ומה יוצא (פסולת).', plant: false },
-  cyto:     { name: 'ציטופלסמה', icon: '🛣️', city: 'הרחובות של העיר', fn: 'נוזל דמוי ג׳לי שממלא את התא. כל האברונים צפים בתוכו, ובו קורים תהליכים רבים.', plant: false },
+  cyto:     { name: 'ציטופלסמה', icon: '🛣️', city: 'הרחובות', fn: 'נוזל דמוי ג׳לי שממלא את התא. כל האברונים צפים בתוכו, ובו קורים תהליכים רבים.', plant: false },
   nucleus:  { name: 'גרעין', icon: '🏛️', city: 'העירייה וראש העיר', fn: 'מרכז הבקרה של התא. הוא שומר את ה-DNA (ספר ההוראות) ומנהל את כל מה שקורה בתא.', plant: false },
   mito:     { name: 'מיטוכונדריה', icon: '⚡', city: 'תחנת הכוח', fn: 'מפרקת סוכר בעזרת חמצן ומפיקה אנרגיה לתא. התהליך נקרא נשימה תאית.', plant: false },
   ribo:     { name: 'ריבוזום', icon: '🏭', city: 'המפעל', fn: 'נקודות קטנטנות שמייצרות חלבונים, לפי ההוראות שמגיעות מהגרעין.', plant: false },
@@ -523,23 +543,29 @@ const ART = {
   nucleotide: `<svg viewBox="0 0 300 130" aria-hidden="true"><line x1="58" y1="65" x2="120" y2="65" stroke="#A7B7D4" stroke-width="4"/><line x1="170" y1="65" x2="205" y2="65" stroke="#A7B7D4" stroke-width="4"/><circle cx="45" cy="65" r="30" fill="#FFC34D"/><text x="45" y="71" text-anchor="middle" class="lbl dk" style="font-size:15px">פוספט</text><polygon points="145,30 180,55 168,98 122,98 110,55" fill="#3ED8C3"/><text x="145" y="75" text-anchor="middle" class="lbl dk" style="font-size:15px">סוכר</text><rect x="205" y="40" width="85" height="50" rx="10" fill="#FF7A6B"/><text x="247" y="71" text-anchor="middle" class="lbl dk" style="font-size:15px">בסיס A</text></svg>`
 };
 
+// labelled boxes so a definition never gets mixed up with an example or a comparison
+const labBox = (cls, label) => t => `<span class="lab-box ${cls}"><span class="lab">${label}</span><span class="lb-t">${t}</span></span>`;
+const DEF = labBox('def', 'הגדרה');
+const EX = (t, label) => labBox('ex', label || 'דוגמה')(t);
+const CMP = labBox('cmp', 'השוואה');
+
 const MISSIONS = [
   {
     id: 'life', num: 1, color: '--coral', title: 'מאפייני חיים', sub: 'מה הופך משהו לחי? 8 מאפיינים, דוגמה אחת.', mins: 10,
     recap: ['יצור חי מקיים את כל המאפיינים ביחד: הזנה, נשימה, הפרשה, גדילה, רבייה, תנועה, תגובה לגירויים, ובנוי מתאים.', 'המשפט לזכור: מסי אוכל, נושם, מזיע, גדל, יש לו ילדים, רץ, מגיב לשריקה, וכולו תאים.', 'מכונית ואש עושות חלק מהדברים, אבל אין להן תאים, הן לא גדלות ולא מתרבות. לכן הן לא חיות.'],
     slides: [
-      { t: 'info', h: 'מה הופך משהו לחי?', body: '<p>אבן, מכונית וענן לא חיים. חתול, עץ וחיידק כן.</p><p>מה ההבדל? לכל יצור חי יש <b>מאפייני חיים</b>: רשימה של תכונות שכל יצור חי מקיים, בלי יוצא מן הכלל.</p><p>כדי לזכור את הרשימה נשתמש בדוגמה אחת שכולם מכירים: <b>ליונל מסי</b>.</p>' },
-      { t: 'reveal', h: 'מסי כמקרה בוחן', intro: 'הפוך את 8 הכרטיסים. כל כרטיס הוא מאפיין חיים אחד.', tiles: [
-        { icon: '🍝', nm: 'הזנה', back: 'לפני משחק מסי אוכל. כל יצור חי צריך מזון לאנרגיה ולבנייה. צמחים מייצרים מזון בעצמם.' },
-        { icon: '💨', nm: 'נשימה', back: 'בריצה הוא נושם מהר. התאים משתמשים בחמצן כדי להפיק אנרגיה מהמזון.' },
-        { icon: '💧', nm: 'הפרשה', back: 'הוא מזיע ונושף פחמן דו-חמצני. כל יצור חי מוציא פסולת מהגוף.' },
-        { icon: '📈', nm: 'גדילה והתפתחות', back: 'פעם הוא היה תינוק, היום הוא מבוגר. כל יצור חי גדל ומתפתח.' },
-        { icon: '👨‍👦', nm: 'רבייה', back: 'יש לו שלושה בנים. יצורים חיים יוצרים צאצאים שדומים להם.' },
-        { icon: '⚽', nm: 'תנועה', back: 'הוא רץ על המגרש. גם צמח זז: פונה לאור, ופרח נפתח ונסגר.' },
-        { icon: '📣', nm: 'תגובה לגירויים', back: 'השופט שורק, ומסי עוצר. יצור חי קולט שינוי בסביבה (גירוי) ומגיב.' },
-        { icon: '🔬', nm: 'בנוי מתאים', back: 'כל הגוף שלו בנוי מתאים, כמו קיר מלבנים. זה הבסיס לכל השאר.' }
+      { t: 'info', h: 'מה הופך משהו לחי?', body: DEF('<b>מאפייני חיים</b> הם רשימה של תכונות שכל יצור חי מקיים, בלי יוצא מן הכלל.') + EX('אבן, מכונית וענן לא חיים. חתול, עץ וחיידק חיים.') + '<p>כדי לזכור את הרשימה נשתמש בדוגמה אחת שכולם מכירים: <b>ליונל מסי</b>.</p>' },
+      { t: 'reveal', h: 'מסי כמקרה בוחן', intro: 'פתח את 8 הכרטיסים. בכל כרטיס יש הגדרה של מאפיין חיים, ודוגמה מהחיים של מסי.', tiles: [
+        { icon: '🍝', nm: 'הזנה', def: 'כל יצור חי צריך מזון, לאנרגיה ולבניית הגוף. צמחים מייצרים מזון בעצמם.', ex: 'לפני משחק מסי אוכל.' },
+        { icon: '💨', nm: 'נשימה', def: 'התאים משתמשים בחמצן כדי להפיק אנרגיה מהמזון.', ex: 'בזמן ריצה מסי נושם מהר.' },
+        { icon: '💧', nm: 'הפרשה', def: 'כל יצור חי מוציא פסולת מהגוף: שתן, זיעה, פחמן דו-חמצני.', ex: 'מסי מזיע ונושף פחמן דו-חמצני.' },
+        { icon: '📈', nm: 'גדילה והתפתחות', def: 'כל יצור חי גדל ומתפתח במהלך החיים.', ex: 'פעם מסי היה תינוק, היום הוא מבוגר.' },
+        { icon: '👨‍👦', nm: 'רבייה', def: 'יצורים חיים יוצרים צאצאים שדומים להם.', ex: 'למסי יש שלושה בנים.' },
+        { icon: '⚽', nm: 'תנועה', def: 'יצור חי מסוגל לזוז. גם צמח זז: פונה לאור, ופרח נפתח ונסגר.', ex: 'מסי רץ על המגרש.' },
+        { icon: '📣', nm: 'תגובה לגירויים', def: 'יצור חי קולט שינוי בסביבה (גירוי) ומגיב אליו.', ex: 'השופט שורק, ומסי עוצר.' },
+        { icon: '🔬', nm: 'בנוי מתאים', def: 'כל יצור חי בנוי מתא אחד או מהרבה תאים. זה הבסיס לכל השאר.', ex: 'כל הגוף של מסי בנוי מתאים.' }
       ] },
-      { t: 'info', h: 'משפט אחד לזכור', body: '<p style="font-size:1.15em; background:var(--bg2); padding:12px 14px; border-radius:14px">מסי <b>אוכל</b>, <b>נושם</b>, <b>מזיע</b>, <b>גדל</b>, יש לו <b>ילדים</b>, <b>רץ</b>, <b>מגיב</b> לשריקה, ו<b>כולו תאים</b>.</p><p>8 חלקים במשפט = 8 מאפיינים. קרא אותו בקול פעמיים, ואז נסה להגיד אותו בלי להסתכל.</p>', tip: '<span>הכלל החשוב: יצור חי מקיים את <b>כולם</b>. מכונית זזה, אבל זה לא מספיק כדי להיות חי.</span>' },
+      { t: 'info', h: 'משפט אחד לזכור', body: EX('מסי <b>אוכל</b>, <b>נושם</b>, <b>מזיע</b>, <b>גדל</b>, יש לו <b>ילדים</b>, <b>רץ</b>, <b>מגיב</b> לשריקה, ו<b>כולו תאים</b>.', 'דוגמה לזכירה') + '<p>8 חלקים במשפט = 8 מאפיינים. קרא אותו בקול פעמיים, ואז נסה להגיד אותו בלי להסתכל.</p>', tip: '<span>הכלל החשוב: יצור חי מקיים את <b>כולם</b>. מכונית זזה, אבל זה לא מספיק כדי להיות חי.</span>' },
       { t: 'quiz', q: 'השופט שורק, ומסי עוצר מיד. איזה מאפיין חיים זה?', opts: ['תגובה לגירויים', 'תנועה', 'נשימה', 'רבייה'], a: 0, ex: 'השריקה היא <b>גירוי</b> (שינוי בסביבה), והעצירה היא <b>התגובה</b>.' },
       { t: 'quiz', q: 'מה זה הפרשה?', opts: ['הוצאת פסולת מהגוף', 'אכילת מזון', 'יצירת צאצאים', 'גדילה של הגוף'], a: 0, ex: 'הפרשה = לפנות פסולת: שתן, זיעה, ופחמן דו-חמצני שנושפים החוצה.' },
       { t: 'quiz', q: 'עציץ על החלון לא הולך לשום מקום. אז הוא לא זז בכלל?', opts: ['נכון, צמחים לא זזים', 'לא נכון, הצמח פונה לכיוון האור'], a: 1, ex: 'צמחים זזים לאט: העלים פונים לאור, ופרחים נפתחים בבוקר ונסגרים בערב.' },
@@ -560,9 +586,9 @@ const MISSIONS = [
   },
   {
     id: 'cell', num: 2, color: '--teal', title: 'מבנה התא ואברונים', sub: 'התא הוא עיר קטנה. מי עושה מה?', mins: 15,
-    recap: ['התא הוא היחידה הקטנה ביותר של החיים. החלקים שבתוכו נקראים אברונים.', 'גרעין = עירייה, מיטוכונדריה = תחנת כוח, ריבוזום = מפעל, קרום = שומר בשער, ציטופלסמה = רחובות.', 'רק בתא צמחי: דופן, כלורופלסט וחלולית גדולה. כמו קופסה ירוקה עם בקבוק מים.'],
+    recap: ['התא הוא היחידה הקטנה ביותר של החיים. החלקים שבתוכו נקראים אברונים.', 'השוואה לעיר: גרעין = עירייה, מיטוכונדריה = תחנת כוח, ריבוזום = מפעל, קרום = שומר בשער, ציטופלסמה = רחובות.', 'רק בתא צמחי: דופן, כלורופלסט וחלולית גדולה. כמו קופסה ירוקה עם בקבוק מים.'],
     slides: [
-      { t: 'info', art: ART.cell, h: 'התא = עיר קטנה', body: '<p>כל יצור חי בנוי מ<b>תאים</b>. התא הוא <b>היחידה הקטנה ביותר של החיים</b>.</p><p>בגוף שלך יש בערך <b>37 טריליון</b> תאים. רואים אותם רק במיקרוסקופ.</p><p>בתוך התא יש חלקים קטנים שנקראים <b>אברונים</b>. לכל אברון יש תפקיד, בדיוק כמו בעיר: יש עירייה, תחנת כוח, מפעלים ושומר בשער.</p>', tip: '<span>אברון = "איבר קטן". לגוף יש איברים, לתא יש אברונים.</span>' },
+      { t: 'info', art: ART.cell, h: 'התא = עיר קטנה', body: DEF('<b>תא</b> הוא היחידה הקטנה ביותר של החיים. כל יצור חי בנוי מתאים.') + DEF('<b>אברונים</b> הם חלקים קטנים בתוך התא. לכל אברון יש תפקיד.') + EX('בגוף שלך יש בערך <b>37 טריליון</b> תאים. רואים אותם רק במיקרוסקופ.') + CMP('התא דומה לעיר: יש בו עירייה, תחנת כוח, מפעלים ושומר בשער.'), tip: '<span>אברון = "איבר קטן". לגוף יש איברים, לתא יש אברונים.</span>' },
       { t: 'cell', h: 'סיור בעיר', intro: 'לחץ על כל חלק בתא. גלה את כל 8 החלקים. שלושה מהם מופיעים רק בתא צמחי.' },
       { t: 'info', h: 'תא צמחי מול תא של בעל חיים', body: '<div class="compare"><div><h3>🐾 תא של בעל חיים</h3><ul><li>קרום התא</li><li>ציטופלסמה</li><li>גרעין</li><li>מיטוכונדריה</li><li>ריבוזומים</li></ul></div><div class="pl"><h3>🌱 תא צמחי</h3><ul><li>כל מה שבצד השני, וגם:</li><li><b>דופן התא</b></li><li><b>כלורופלסטים</b></li><li><b>חלולית גדולה</b></li></ul></div></div>', tip: '<span>תא צמחי = <b>קופסה</b> (דופן) <b>ירוקה</b> (כלורופלסט) עם <b>בקבוק מים</b> בפנים (חלולית).</span>' },
       { t: 'quiz', q: 'אני תחנת הכוח של התא. אני מפיק אנרגיה מסוכר וחמצן. מי אני?', opts: ['מיטוכונדריה', 'גרעין', 'ריבוזום', 'חלולית'], a: 0, ex: 'מיטוכונדריה = תחנת כוח ⚡. התהליך נקרא נשימה תאית.' },
@@ -586,17 +612,17 @@ const MISSIONS = [
     id: 'dna', num: 3, color: '--violet', title: 'מבנה ה-DNA', sub: 'גרעין, כרומוזום, גן, נוקלאוטיד. מהגדול לקטן.', mins: 15,
     recap: ['מהגדול לקטן: תא ← גרעין ← כרומוזום ← גן ← נוקלאוטיד. כמו בית ← ספרייה ← ספר ← מתכון ← אות.', 'בתא גוף של אדם יש 46 כרומוזומים: 23 מאמא ו-23 מאבא. ה-DNA הוא סליל כפול, כמו סולם מפותל.', 'נוקלאוטיד = ספה בבית: סוכר, פוספט, בסיס. הזוגות: A עם T, C עם G.'],
     slides: [
-      { t: 'info', art: helixSVG(false), h: 'ספר ההוראות של הגוף', body: '<p>בכל תא בגוף שלך יש ספר הוראות שלם: איך לבנות אותך. צבע העיניים, צורת האף, הכול.</p><p>הספר הזה נקרא <b>DNA</b>. הוא כתוב בשפה של 4 אותיות בלבד: <b>A, T, C, G</b>.</p><p>חצי מההוראות קיבלת מאמא, וחצי מאבא.</p>' },
+      { t: 'info', art: helixSVG(false), h: 'ספר ההוראות של הגוף', body: DEF('<b>DNA</b> הוא החומר התורשתי: ספר ההוראות לבניית הגוף. הוא נמצא בכל תא, וכתוב ב-4 אותיות בלבד: <b>A, T, C, G</b>.') + EX('צבע העיניים וצורת האף נקבעים לפי ההוראות האלה.') + '<p>חצי מההוראות קיבלת מאמא, וחצי מאבא.</p>' },
       { t: 'zoom', h: 'זום פנימה', levels: [
-        { name: 'תא', an: '🏠 הבית', art: ART.cell, text: 'מתחילים בתא. בתוכו, באמצע, יש חדר מיוחד...' },
-        { name: 'גרעין', an: '📚 הספרייה בבית', art: ART.nucleus, text: 'הגרעין. כאן שמור כל המידע התורשתי של התא.' },
-        { name: 'כרומוזום', an: '📕 ספר אחד בספרייה', art: ART.chrom, text: 'בגרעין יש כרומוזומים: חוטים ארוכים ודחוסים של DNA. בתא גוף של אדם יש <b>46</b> (23 זוגות).' },
-        { name: 'DNA', an: '📜 הטקסט שכתוב בספר', art: helixSVG(false), text: 'פותחים כרומוזום ומגלים את ה-DNA: <b>סליל כפול</b>, כמו סולם מפותל.' },
-        { name: 'גן', an: '📄 מתכון אחד בספר', art: helixSVG(true), text: 'גן הוא <b>קטע</b> ב-DNA עם הוראה אחת: איך לבנות חלבון אחד, שקובע תכונה (למשל צבע עיניים).' },
-        { name: 'נוקלאוטיד', an: '🔤 אות אחת', art: ART.nucleotide, text: 'הנוקלאוטיד הוא <b>יחידת הבנייה</b> הקטנה של ה-DNA. כל שלב בסולם בנוי משני נוקלאוטידים.' }
+        { name: 'תא', an: 'כמו הבית', art: ART.cell, text: 'היחידה הקטנה ביותר של החיים. בתוכו, באמצע, נמצא הגרעין.' },
+        { name: 'גרעין', an: 'כמו הספרייה בבית', art: ART.nucleus, text: 'מרכז הבקרה של התא. בו שמור כל המידע התורשתי.' },
+        { name: 'כרומוזום', an: 'כמו ספר אחד בספרייה', art: ART.chrom, text: 'חוט ארוך ודחוס של DNA בתוך הגרעין. בתא גוף של אדם יש <b>46</b> כרומוזומים (23 זוגות).' },
+        { name: 'DNA', an: 'כמו הטקסט שכתוב בספר', art: helixSVG(false), text: 'המולקולה שנושאת את ההוראות. הצורה שלה היא <b>סליל כפול</b>, כמו סולם מפותל.' },
+        { name: 'גן', an: 'כמו מתכון אחד בספר', art: helixSVG(true), text: '<b>קטע</b> ב-DNA עם הוראה אחת: איך לבנות חלבון אחד, שקובע תכונה.', ex: 'הגן שקובע את צבע העיניים.' },
+        { name: 'נוקלאוטיד', an: 'כמו אות אחת', art: ART.nucleotide, text: '<b>יחידת הבנייה</b> הקטנה של ה-DNA. כל שלב בסולם בנוי משני נוקלאוטידים.' }
       ] },
-      { t: 'info', art: ART.nucleotide, h: 'נוקלאוטיד = לבנת לגו', body: '<p>ה-DNA בנוי ממיליוני לבנים קטנות שנקראות <b>נוקלאוטידים</b>.</p><p>לכל נוקלאוטיד יש <b>3 חלקים</b>:</p><p>1. <b>סוכר</b><br>2. <b>פוספט</b> (קבוצת זרחה)<br>3. <b>בסיס חנקני</b>: אחד מ-4 סוגים, A, T, C או G</p>', tip: '<span>נוקלאוטיד = <b>ספה בבית</b>: <b>ס</b>וכר, <b>פ</b>וספט, <b>ב</b>סיס.</span>' },
-      { t: 'info', art: '<div class="letters"><div class="pair"><span style="color:var(--coral)">A</span><i>—</i><span style="color:var(--amber)">T</span></div><div class="pair"><span style="color:var(--teal)">C</span><i>—</i><span style="color:var(--violet)">G</span></div></div>', h: 'מי מתחבר עם מי?', body: '<p>שני הצדדים של הסולם מחוברים בזוגות קבועים:</p><p><b>A</b> (אדנין) תמיד עם <b>T</b> (תימין).<br><b>C</b> (ציטוזין) תמיד עם <b>G</b> (גואנין).</p>', tip: '<span>תסתכל על צורת האותיות: <b>A</b> ו-<b>T</b> עשויות רק מקווים ישרים. <b>C</b> ו-<b>G</b> עגולות. ישר עם ישר, עגול עם עגול!</span>' },
+      { t: 'info', art: ART.nucleotide, h: 'נוקלאוטיד', body: DEF('<b>נוקלאוטיד</b> הוא יחידת הבנייה של ה-DNA. ה-DNA בנוי ממיליוני נוקלאוטידים.') + '<p>לכל נוקלאוטיד יש <b>3 חלקים</b>:</p><p>1. <b>סוכר</b><br>2. <b>פוספט</b> (קבוצת זרחה)<br>3. <b>בסיס חנקני</b>: אחד מ-4 סוגים, A, T, C או G</p>' + CMP('כמו לבנת לגו: הרבה לבנים קטנות בונות מבנה גדול.'), tip: '<span>נוקלאוטיד = <b>ספה בבית</b>: <b>ס</b>וכר, <b>פ</b>וספט, <b>ב</b>סיס.</span>' },
+      { t: 'info', art: '<div class="letters"><div class="pair"><span style="color:var(--coral)">A</span><i>—</i><span style="color:var(--amber)">T</span></div><div class="pair"><span style="color:var(--teal)">C</span><i>—</i><span style="color:var(--violet)">G</span></div></div>', h: 'מי מתחבר עם מי?', body: DEF('שני הצדדים של סולם ה-DNA מחוברים בזוגות קבועים של בסיסים:<br><b>A</b> (אדנין) תמיד עם <b>T</b> (תימין).<br><b>C</b> (ציטוזין) תמיד עם <b>G</b> (גואנין).'), tip: '<span>תסתכל על צורת האותיות: <b>A</b> ו-<b>T</b> עשויות רק מקווים ישרים. <b>C</b> ו-<b>G</b> עגולות. ישר עם ישר, עגול עם עגול!</span>' },
       { t: 'pair', h: 'בנה את הצד השני של הסולם', intro: 'לכל אות למעלה, בחר את בת הזוג שלה למטה.' },
       { t: 'order', h: 'סדר מהגדול לקטן', items: ['תא', 'גרעין', 'כרומוזום', 'גן', 'נוקלאוטיד'] },
       { t: 'quiz', q: 'כמה כרומוזומים יש בתא בגוף של אדם?', opts: ['46', '23', '2', '100'], a: 0, ex: '46 = 23 זוגות. 23 מאמא ו-23 מאבא.', hint: 'רמז: יש 23 זוגות. כמה זה ביחד?' },
@@ -635,26 +661,26 @@ const BANK = [
 ];
 
 const CARDS = [
-  { f: '8 מאפייני החיים', b: 'הזנה, נשימה, הפרשה, גדילה, רבייה, תנועה, תגובה לגירויים, בנוי מתאים.<br><small>מסי אוכל, נושם, מזיע, גדל, יש לו ילדים, רץ, מגיב לשריקה, וכולו תאים.</small>' },
-  { f: 'תגובה לגירויים', b: 'יצור חי מרגיש שינוי בסביבה (גירוי) ומגיב.<br><small>השופט שורק ← מסי עוצר.</small>' },
-  { f: 'הפרשה', b: 'פינוי פסולת מהגוף: שתן, זיעה, פחמן דו-חמצני.' },
+  { f: '8 מאפייני החיים', b: 'הזנה, נשימה, הפרשה, גדילה, רבייה, תנועה, תגובה לגירויים, בנוי מתאים.<br><small>לזכירה: מסי אוכל, נושם, מזיע, גדל, יש לו ילדים, רץ, מגיב לשריקה, וכולו תאים.</small>' },
+  { f: 'תגובה לגירויים', b: 'יצור חי קולט שינוי בסביבה (גירוי) ומגיב אליו.<br><small>דוגמה: השופט שורק, ומסי עוצר.</small>' },
+  { f: 'הפרשה', b: 'פינוי פסולת מהגוף.<br><small>דוגמה: שתן, זיעה, פחמן דו-חמצני.</small>' },
   { f: 'תא', b: 'היחידה הקטנה ביותר של החיים. כל יצור חי בנוי מתאים.' },
-  { f: 'אברון', b: '"איבר קטן" בתוך התא. לכל אברון יש תפקיד.' },
-  { f: 'גרעין 🏛️', b: 'ראש העיר. שומר את ה-DNA ומנהל את התא.' },
-  { f: 'קרום התא 🛂', b: 'השומר בשער. מחליט מה נכנס ומה יוצא.' },
-  { f: 'ציטופלסמה 🛣️', b: 'נוזל ג׳לי שממלא את התא. האברונים צפים בו.' },
-  { f: 'מיטוכונדריה ⚡', b: 'תחנת הכוח. מפיקה אנרגיה מסוכר וחמצן. יש גם בצמח!' },
-  { f: 'ריבוזום 🏭', b: 'המפעל. מייצר חלבונים.' },
-  { f: 'כלורופלסט ☀️', b: 'רק בצמח. פוטוסינתזה: אור ← סוכר. בגללו הצמח ירוק.' },
-  { f: 'דופן התא 🧱', b: 'רק בצמח. חומה קשיחה שנותנת צורה ותמיכה.' },
-  { f: 'חלולית 💧', b: 'גדולה רק בצמח. אוגרת מים. כשהיא ריקה הצמח נובל.' },
-  { f: 'מה יש רק בתא צמחי?', b: 'דופן, כלורופלסט, חלולית גדולה.<br><small>קופסה ירוקה עם בקבוק מים.</small>' },
-  { f: 'כרומוזום', b: 'חוט ארוך ודחוס של DNA בתוך הגרעין. לאדם יש 46 (23 זוגות).<br><small>ספר בספרייה 📕</small>' },
-  { f: 'DNA', b: 'החומר התורשתי. סליל כפול, כמו סולם מפותל.' },
-  { f: 'גן', b: 'קטע ב-DNA עם הוראה לבניית חלבון אחד, שקובע תכונה.<br><small>מתכון אחד בספר 📄</small>' },
-  { f: 'נוקלאוטיד', b: 'יחידת הבנייה של ה-DNA: סוכר + פוספט + בסיס.<br><small>ספה בבית: סוכר, פוספט, בסיס</small>' },
-  { f: 'זוגות הבסיסים', b: 'A עם T, C עם G.<br><small>ישר עם ישר, עגול עם עגול.</small>' },
-  { f: 'סדר מהגדול לקטן', b: 'תא ← גרעין ← כרומוזום ← גן ← נוקלאוטיד<br><small>בית ← ספרייה ← ספר ← מתכון ← אות</small>' }
+  { f: 'אברון', b: 'חלק קטן בתוך התא, שיש לו תפקיד.<br><small>לזכירה: אברון = "איבר קטן".</small>' },
+  { f: 'גרעין', b: 'מרכז הבקרה. שומר את ה-DNA ומנהל את התא.<br><small>השוואה: ראש העיר</small>' },
+  { f: 'קרום התא', b: 'עוטף את התא ומחליט מה נכנס ומה יוצא.<br><small>השוואה: השומר בשער</small>' },
+  { f: 'ציטופלסמה', b: 'נוזל דמוי ג׳לי שממלא את התא. האברונים צפים בו.<br><small>השוואה: הרחובות</small>' },
+  { f: 'מיטוכונדריה', b: 'מפיקה אנרגיה מסוכר וחמצן (נשימה תאית). יש גם בצמח.<br><small>השוואה: תחנת הכוח</small>' },
+  { f: 'ריבוזום', b: 'מייצר חלבונים.<br><small>השוואה: המפעל</small>' },
+  { f: 'כלורופלסט', b: 'רק בצמח. מייצר סוכר בעזרת אור (פוטוסינתזה). בגללו הצמח ירוק.<br><small>השוואה: פאנל סולארי</small>' },
+  { f: 'דופן התא', b: 'רק בצמח. שכבה קשיחה שנותנת לתא צורה ותמיכה.<br><small>השוואה: חומת העיר</small>' },
+  { f: 'חלולית', b: 'גדולה רק בצמח. אוגרת מים וחומרים.<br><small>דוגמה: כשהיא ריקה, הצמח נובל.</small>' },
+  { f: 'מה יש רק בתא צמחי?', b: 'דופן, כלורופלסט, חלולית גדולה.<br><small>לזכירה: קופסה ירוקה עם בקבוק מים.</small>' },
+  { f: 'כרומוזום', b: 'חוט ארוך ודחוס של DNA בתוך הגרעין. לאדם יש 46 (23 זוגות).<br><small>השוואה: ספר בספרייה</small>' },
+  { f: 'DNA', b: 'החומר התורשתי. הצורה שלו היא סליל כפול.<br><small>השוואה: סולם מפותל</small>' },
+  { f: 'גן', b: 'קטע ב-DNA עם הוראה לבניית חלבון אחד, שקובע תכונה.<br><small>דוגמה: הגן לצבע העיניים. השוואה: מתכון אחד בספר.</small>' },
+  { f: 'נוקלאוטיד', b: 'יחידת הבנייה של ה-DNA: סוכר + פוספט + בסיס.<br><small>לזכירה: ספה בבית</small>' },
+  { f: 'זוגות הבסיסים', b: 'A עם T, C עם G.<br><small>לזכירה: ישר עם ישר, עגול עם עגול.</small>' },
+  { f: 'סדר מהגדול לקטן', b: 'תא ← גרעין ← כרומוזום ← גן ← נוקלאוטיד<br><small>השוואה: בית ← ספרייה ← ספר ← מתכון ← אות</small>' }
 ];
 
 /* ---------- router ---------- */
@@ -707,8 +733,10 @@ function renderHome() {
 
 /* ---------- mission engine ---------- */
 let M = null;
-function startMission(id) { M = { m: MISSIONS.find(x => x.id === id), i: 0, mistakes: 0 }; renderSlide(); }
-function done() { const n = $('#next'); if (n && n.disabled) { n.disabled = false; n.classList.add('pulse'); } }
+function startMission(id) { M = { m: MISSIONS.find(x => x.id === id), i: 0, mistakes: 0, seen: new Set() }; renderSlide(); }
+function done() { if (M) M.seen.add(M.i); const n = $('#next'); if (n && n.disabled) { n.disabled = false; n.classList.add('pulse'); } }
+// XP only the first time a slide is completed, so going back and forth does not farm points
+function xp(n, el) { if (M && M.seen.has(M.i)) return; addXP(n, el); }
 function fb(el, ok, html) {
   const f = $('.fb', el); f.hidden = false; f.className = 'fb ' + (ok ? 'good' : 'bad'); f.innerHTML = `<strong>${ok ? 'נכון.' : 'לא מדויק.'}</strong>${html || ''}`;
   if (S.tts) speak((ok ? 'נכון. ' : 'לא מדויק. ') + (html || ''));
@@ -720,14 +748,17 @@ function renderSlide() {
   toTop();
   const { m, i } = M, sl = m.slides[i];
   app.innerHTML = `<section class="lesson" style="--mc:var(${m.color})">
-    <div class="lesson-top"><span style="display:flex; gap:8px"><button class="ghost" data-act="home">→ למפה</button>${sayBtn()}</span>
+    <div class="lesson-top"><span style="display:flex; gap:8px"><button class="homebtn" data-act="home">🏠 לדף הראשי</button>${sayBtn()}</span>
       <div class="dots" aria-label="שלב ${i + 1} מתוך ${m.slides.length}">${m.slides.map((_, k) => `<span class="${k < i ? 'on' : k === i ? 'cur' : ''}"></span>`).join('')}</div></div>
     <div class="slide" id="slide"></div>
-    <div class="lesson-nav"><button class="btn primary" id="next" disabled>${i === m.slides.length - 1 ? 'סיום משימה' : 'המשך ←'}</button></div>
+    <div class="lesson-nav">${i > 0 ? '<button class="btn" id="prev">→ הקודם</button>' : '<span></span>'}<button class="btn primary" id="next" disabled>${i === m.slides.length - 1 ? 'סיום משימה' : 'הבא ←'}</button></div>
   </section>`;
   const el = $('#slide');
+  const wasSeen = M.seen.has(i);
   ({ info: rInfo, quiz: rQuiz, reveal: rReveal, binary: rBinary, cell: rCell, zoom: rZoom, pair: rPair, order: rOrder })[sl.t](sl, el);
+  if (wasSeen) { const n = $('#next'); n.disabled = false; n.classList.remove('pulse'); }
   $('#next').onclick = () => { M.i++; if (M.i >= m.slides.length) finishMission(); else renderSlide(); };
+  const p = $('#prev'); if (p) p.onclick = () => { hush(); M.i--; renderSlide(); };
 }
 
 function rInfo(sl, el) {
@@ -746,7 +777,7 @@ function rQuiz(sl, el) {
     const k = +b.dataset.k;
     if (k === sl.a) {
       b.classList.add('right'); $$('.opt', el).forEach(x => x.disabled = true);
-      fb(el, true, sl.ex); sfx('good'); if (tries === 0) addXP(10, b); done();
+      fb(el, true, sl.ex); sfx('good'); if (tries === 0) xp(10, b); done();
     } else {
       tries++; miss(); b.classList.add('wrong'); b.disabled = true; sfx('bad');
       fb(el, false, sl.hint || 'לא זה. נסה תשובה אחרת!');
@@ -757,17 +788,18 @@ function rQuiz(sl, el) {
 function rReveal(sl, el) {
   const seen = new Set();
   el.innerHTML = `<h2>${sl.h}</h2><p style="margin:0">${sl.intro}</p>
-    <div class="tiles">${sl.tiles.map((t, k) => `<button class="tile" data-k="${k}" aria-label="${t.nm}"><div class="tile-in">
-      <div class="face front"><span class="emo">${t.icon}</span><span class="nm">${t.nm}</span><small>לחץ להפוך</small></div>
-      <div class="face back"><span class="nm">${t.nm}</span><span>${t.back}</span></div></div></button>`).join('')}</div>
-    <div class="counter" id="cnt">הפכת 0 מתוך ${sl.tiles.length}</div>`;
+    <div class="tiles">${sl.tiles.map((t, k) => `<button class="tile" data-k="${k}" aria-expanded="false">
+      <span class="tile-h"><span class="emo">${t.icon}</span><span class="nm">${t.nm}</span><span class="tg">פתח ▾</span></span>
+      <span class="tile-b">${DEF(t.def)}${EX(t.ex)}</span></button>`).join('')}</div>
+    <div class="counter" id="cnt">פתחת 0 מתוך ${sl.tiles.length}</div>`;
   setRead(sl.h + '. ' + sl.intro);
   $$('.tile', el).forEach(b => b.onclick = () => {
-    b.classList.toggle('open'); sfx('flip');
+    const open = b.classList.toggle('open'); sfx('flip');
+    b.setAttribute('aria-expanded', open); $('.tg', b).textContent = open ? 'סגור ▴' : 'פתח ▾';
     const t = sl.tiles[+b.dataset.k];
-    if (b.classList.contains('open')) { READ = t.nm + '. ' + t.back; if (S.tts) speak(READ); }
-    if (!seen.has(b.dataset.k)) { seen.add(b.dataset.k); addXP(2, b); }
-    $('#cnt').textContent = `הפכת ${seen.size} מתוך ${sl.tiles.length}` + (seen.size === sl.tiles.length ? ' ✓' : '');
+    if (open) { READ = t.nm + '. הגדרה: ' + t.def + ' דוגמה: ' + t.ex; if (S.tts) speak(READ); }
+    if (!seen.has(b.dataset.k)) { seen.add(b.dataset.k); xp(2, b); }
+    $('#cnt').textContent = `פתחת ${seen.size} מתוך ${sl.tiles.length}` + (seen.size === sl.tiles.length ? ' ✓' : '');
     if (seen.size === sl.tiles.length) done();
   });
 }
@@ -786,7 +818,7 @@ function rBinary(sl, el) {
     $$('.bin .opt', el).forEach(b => b.onclick = () => {
       if (answered) return; answered = true;
       const ok = +b.dataset.k === it.a;
-      if (ok) { b.classList.add('right'); sfx('good'); addXP(5, b); }
+      if (ok) { b.classList.add('right'); sfx('good'); xp(5, b); }
       else { b.classList.add('wrong'); $(`.bin .opt[data-k="${it.a}"]`, el).classList.add('right'); miss(); sfx('bad'); }
       $$('.bin .opt', el).forEach(x => x.disabled = true);
       fb(el, ok, it.ex);
@@ -816,11 +848,11 @@ function rCell(sl, el) {
     $$('.sel', svg).forEach(x => x.classList.remove('sel'));
     $$(`[data-org="${k}"]`, svg).forEach(x => x.classList.add('sel'));
     $$('.chip', el).forEach(c => c.classList.toggle('cur', c.dataset.chip === k));
-    $('#orgInfo').innerHTML = `<h3>${o.icon} ${o.name}</h3><span class="city">בעיר: ${o.city}</span><span>${o.fn}</span>
+    $('#orgInfo').innerHTML = `<h3>${o.icon} ${o.name}</h3>${DEF(o.fn)}${CMP('בעיר שלנו: ' + o.city + '.')}
       <span class="where ${o.plant ? 'plant' : ''}">${o.plant ? '🌱 רק בתא צמחי' : '🌱🐾 בשני סוגי התאים'}</span>`;
-    READ = o.name + '. בעיר: ' + o.city + '. ' + o.fn + ' ' + (o.plant ? 'נמצא רק בתא צמחי.' : 'נמצא בשני סוגי התאים.');
+    READ = o.name + '. הגדרה: ' + o.fn + ' השוואה: בעיר שלנו, ' + o.city + '. ' + (o.plant ? 'נמצא רק בתא צמחי.' : 'נמצא בשני סוגי התאים.');
     if (S.tts) speak(READ);
-    if (!seen.has(k)) { seen.add(k); addXP(3, $(`[data-chip="${k}"]`, el)); $(`[data-chip="${k}"]`, el).classList.add('seen'); sfx('good'); }
+    if (!seen.has(k)) { seen.add(k); xp(3, $(`[data-chip="${k}"]`, el)); $(`[data-chip="${k}"]`, el).classList.add('seen'); sfx('good'); }
     $('#cnt').textContent = `גילית ${seen.size} מתוך 8` + (seen.size === 8 ? ' ✓ סיירת בכל העיר!' : (seen.size >= 5 && !plant ? ' · נסה את התא הצמחי' : ''));
     if (seen.size === 8) done();
   };
@@ -834,11 +866,11 @@ function rZoom(sl, el) {
     const L = sl.levels[k];
     el.innerHTML = `<h2>${sl.h}</h2>
       <div class="zoom-trail">${sl.levels.slice(0, k + 1).map((x, n) => `<span class="${n === k ? 'now' : ''}">${x.name}</span>`).join('<span>←</span>')}</div>
-      <div class="zoom-stage"><h3 style="font-size:30px">${L.name}</h3>${L.art}<span class="an">${L.an}</span><p>${L.text}</p></div>
+      <div class="zoom-stage"><h3 style="font-size:30px">${L.name}</h3>${L.art}<div style="width:100%">${DEF(L.text)}${L.ex ? EX(L.ex) : ''}${CMP(L.an)}</div></div>
       <div class="row-next">${k < sl.levels.length - 1 ? `<button class="btn" id="zin">זום פנימה ←</button>` : '<span class="counter">✓ הגעת ליחידה הקטנה ביותר.</span>'}</div>`;
-    setRead(L.name + '. ' + L.an + '. ' + L.text);
+    setRead(L.name + '. הגדרה: ' + L.text + (L.ex ? ' דוגמה: ' + L.ex : '') + ' השוואה: ' + L.an + '.');
     const z = $('#zin', el); if (z) z.onclick = () => { k++; sfx('flip'); draw(); };
-    if (k === sl.levels.length - 1) { addXP(10, $('.zoom-stage', el)); done(); }
+    if (k === sl.levels.length - 1) { xp(10, $('.zoom-stage', el)); done(); }
   };
   draw();
 }
@@ -861,7 +893,7 @@ function rPair(sl, el) {
     if (k >= strand.length) return;
     if (btn.dataset.b === P[strand[k]]) {
       k++; sfx('good'); draw();
-      if (k === strand.length) { fb(el, true, 'הסולם שלם! ישר עם ישר (A–T), עגול עם עגול (C–G).'); addXP(firstTry ? 15 : 8, $('#strand')); done(); }
+      if (k === strand.length) { fb(el, true, 'הסולם שלם! ישר עם ישר (A–T), עגול עם עגול (C–G).'); xp(firstTry ? 15 : 8, $('#strand')); done(); }
     } else {
       firstTry = false; miss(); sfx('bad');
       fb(el, false, `ל-${strand[k]} מתאים רק ${P[strand[k]]}. ${'AT'.includes(strand[k]) ? 'ישר עם ישר!' : 'עגול עם עגול!'}`);
@@ -881,7 +913,7 @@ function rOrder(sl, el) {
     if (c.dataset.v === correct[k]) {
       const s = $(`.slot[data-n="${k}"]`, el); s.textContent = c.dataset.v; s.classList.add('full'); c.remove(); k++; sfx('good');
       $('.fb', el).hidden = true;
-      if (k === correct.length) { fb(el, true, 'בית ← ספרייה ← ספר ← מתכון ← אות.'); addXP(firstTry ? 15 : 8, $('.order-ans', el)); done(); }
+      if (k === correct.length) { fb(el, true, 'בית ← ספרייה ← ספר ← מתכון ← אות.'); xp(firstTry ? 15 : 8, $('.order-ans', el)); done(); }
     } else {
       firstTry = false; miss(); sfx('bad'); c.classList.remove('shake'); void c.offsetWidth; c.classList.add('shake');
       fb(el, false, 'לא זה. מה הכי גדול מבין מה שנשאר? (חשוב על בית ← ספרייה ← ספר ← מתכון ← אות)');
@@ -902,7 +934,7 @@ function finishMission() {
     <p style="margin:0; color:var(--muted)">${stars === 3 ? 'מושלם! כמעט בלי טעויות.' : stars === 2 ? 'יפה מאוד! עוד סיבוב אחד ותגיע ל-3 כוכבים.' : 'סיימת, וזה מה שחשוב. נסה שוב מחר לעוד כוכבים.'}</p>
     <div class="recap"><h3>3 דברים לזכור</h3><ol>${m.recap.map(r => `<li>${r}</li>`).join('')}</ol></div>
     <div class="btns">${nxt ? `<button class="btn primary" data-go="mission:${nxt.id}">למשימה ${nxt.num} ←</button>` : `<button class="btn primary" data-go="boss">למבחן הסיכום ←</button>`}
-      <button class="btn" data-act="home">למפה</button><button class="btn ghost" data-go="mission:${m.id}">לשחק שוב</button></div>
+      <button class="btn" data-act="home">🏠 לדף הראשי</button><button class="btn ghost" data-go="mission:${m.id}">לשחק שוב</button></div>
   </section>`;
   M = null;
   setRead('משימה ' + m.num + ' הושלמה! שלושה דברים לזכור: ' + m.recap.join('. '));
@@ -918,7 +950,7 @@ function drawBoss() {
   if (B.i >= B.qs.length) return bossEnd(true);
   const q = B.qs[B.i], order = q.opts.length > 2 ? shuffle(q.opts.map((_, k) => k)) : [0, 1];
   app.innerHTML = `<section class="lesson" style="--mc:var(--pink)">
-    <div class="boss-top"><span style="display:flex; gap:8px"><button class="ghost" data-act="home">→ למפה</button>${sayBtn()}</span><span class="hearts" aria-label="${B.hearts} לבבות">${'❤️'.repeat(B.hearts)}${'🖤'.repeat(3 - B.hearts)}</span></div>
+    <div class="boss-top"><span style="display:flex; gap:8px"><button class="homebtn" data-act="home">🏠 לדף הראשי</button>${sayBtn()}</span><span class="hearts" aria-label="${B.hearts} לבבות">${'❤️'.repeat(B.hearts)}${'🖤'.repeat(3 - B.hearts)}</span></div>
     <div class="prog"><i style="width:${B.i / B.qs.length * 100}%"></i></div>
     <div class="slide" id="slide"><div class="qlabel">מבחן סיכום · שאלה ${B.i + 1} מתוך ${B.qs.length}</div><h2>${q.q}</h2>
       <div class="opts">${order.map(k => `<button class="opt" data-k="${k}">${q.opts[k]}</button>`).join('')}</div>
@@ -940,12 +972,12 @@ function bossEnd(win) {
     S.stars.boss = Math.max(S.stars.boss || 0, B.hearts); save();
     app.innerHTML = `<section class="finish"><div class="stars-big">${[1, 2, 3].map(k => `<span class="${k <= B.hearts ? 'on' : ''}">★</span>`).join('')}</div>
       <h2 style="font-size:36px">עברת את מבחן הסיכום!</h2><p style="margin:0">ענית נכון על ${B.right} מתוך ${B.qs.length} שאלות. אתה מוכן לבוחן.</p>
-      <div class="btns"><button class="btn primary" data-go="cards">שליפה מהירה</button><button class="btn" data-act="home">למפה</button><button class="btn ghost" data-go="boss">עוד סיבוב</button></div></section>`;
+      <div class="btns"><button class="btn primary" data-go="cards">שליפה מהירה</button><button class="btn" data-act="home">🏠 לדף הראשי</button><button class="btn ghost" data-go="boss">עוד סיבוב</button></div></section>`;
     addXP(100, $('.stars-big')); confetti(); setTimeout(confetti, 600); sfx('level');
   } else {
     app.innerHTML = `<section class="finish"><h2 style="font-size:32px">נגמרו הלבבות הפעם</h2>
       <p style="margin:0; max-width:46ch">כל טעות כאן היא שאלה שלא תפספס בבוחן. ענית נכון על ${B.right} שאלות. בכל ניסיון השאלות מתחלפות, אז נסה שוב.</p>
-      <div class="btns"><button class="btn primary" data-go="boss">עוד ניסיון</button><button class="btn" data-go="cards">לחזור על הכרטיסיות</button><button class="btn ghost" data-act="home">למפה</button></div></section>`;
+      <div class="btns"><button class="btn primary" data-go="boss">עוד ניסיון</button><button class="btn" data-go="cards">לחזור על הכרטיסיות</button><button class="btn ghost" data-act="home">🏠 לדף הראשי</button></div></section>`;
   }
 }
 
@@ -956,12 +988,12 @@ function drawCard() {
   toTop();
   if (!C.deck.length) {
     app.innerHTML = `<section class="finish"><h2 style="font-size:32px">עברת על כל הכרטיסיות</h2><p style="margin:0">ידעת את כולן. אתה מוכן לבוחן.</p>
-      <div class="btns"><button class="btn primary" data-go="cards">עוד סיבוב</button><button class="btn" data-act="home">למפה</button></div></section>`;
+      <div class="btns"><button class="btn primary" data-go="cards">עוד סיבוב</button><button class="btn" data-act="home">🏠 לדף הראשי</button></div></section>`;
     confetti(); sfx('level'); return;
   }
   const c = C.deck[0];
   app.innerHTML = `<section class="lesson" style="--mc:var(--teal)">
-    <div class="lesson-top"><span style="display:flex; gap:8px"><button class="ghost" data-act="home">→ למפה</button>${sayBtn()}</span><span class="counter">נשארו ${C.deck.length} · ידעת ${C.known}</span></div>
+    <div class="lesson-top"><span style="display:flex; gap:8px"><button class="homebtn" data-act="home">🏠 לדף הראשי</button>${sayBtn()}</span><span class="counter">נשארו ${C.deck.length} · ידעת ${C.known}</span></div>
     <div style="display:grid; gap:14px; margin-top:8px">
       <button class="fcard" id="fc" aria-label="הפוך כרטיס"><div class="tile-in">
         <div class="face front"><span>${c.f}</span><small>מה אתה זוכר? לחץ להפוך</small></div>
@@ -988,7 +1020,7 @@ const PLAN = [
 function renderPlan() {
   toTop(); M = null;
   app.innerHTML = `<section>
-    <div class="lesson-top"><button class="ghost" data-act="home">→ למפה</button></div>
+    <div class="lesson-top"><button class="homebtn" data-act="home">🏠 לדף הראשי</button></div>
     <h2 style="font-size:32px; margin-block:8px 6px">התכנית עד הבוחן</h2>
     <p style="margin:0 0 16px; color:var(--muted)">מעט בכל יום עדיף על הרבה ביום אחד. סמן ✓ כשסיימת.</p>
     <div class="days">${PLAN.map(d => `<label class="day ${d.test ? 'test' : ''} ${S.plan[d.id] ? 'checked' : ''}" for="${d.id}">
