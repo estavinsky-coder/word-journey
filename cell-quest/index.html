@@ -278,6 +278,16 @@ details.parent{margin-top:18px; background:var(--bg2); border:1px solid var(--li
 details.parent summary{cursor:pointer; font-weight:700}
 details.parent ul{margin:10px 0 0; padding-inline-start:20px; display:grid; gap:6px; font-size:16px}
 
+
+.qa-part{font-family:var(--display); font-size:22px; margin:22px 0 6px; color:var(--amber)}
+.qa-note{margin:0 0 10px; color:var(--muted)}
+.qa-item{background:var(--card); border:1px solid var(--line); border-radius:16px; padding:14px 16px; margin-bottom:10px; display:grid; gap:8px}
+.qa-q{font-weight:700}
+.qa-opts{list-style:none; margin:0; padding:0; display:grid; gap:2px; color:var(--muted)}
+.qa-opts span{font-weight:700; color:var(--fg)}
+.qa-ans{background:rgba(95,224,160,.12); border:1px solid rgba(95,224,160,.5); border-radius:12px; padding:10px 12px; display:grid; gap:4px}
+.qa-ans b{color:var(--good)}
+.qa-show{justify-self:start}
 /* overlays */
 #confetti{position:fixed; inset:0; pointer-events:none; z-index:60}
 .toast{position:fixed; left:50%; bottom:calc(20px + env(safe-area-inset-bottom,0px)); transform:translateX(-50%); background:var(--amber); color:#1B1405; font-weight:700; padding:10px 20px; border-radius:999px; z-index:70; box-shadow:0 8px 30px rgba(0,0,0,.4); animation:pop .3s; max-width:calc(100% - 32px); text-align:center}
@@ -756,6 +766,49 @@ const BANK = [
   { q: 'למה תכונה נרכשת לא עוברת לילדים?', opts: ['כי היא לא כתובה בגנים', 'כי היא חלשה מדי', 'כי רק אבא מעביר תכונות', 'כי היא נמצאת רק בעור'], a: 0, ex: 'רק מה שכתוב ב-DNA עובר בתורשה.' },
 ];
 
+// Questions and answers from the sample exam pages (step 07).
+const QA = [
+  { part: 'חלק א: שאלות רב-ברירה', note: 'סמנו תשובה נכונה אחת בלבד בכל סעיף.', items: [
+    { q: 'איזה אברון מכיל את החומר התורשתי של התא?', opts: ['ציטופלזמה', 'מיטוכונדריה', 'גרעין התא', 'ריבוזום'], a: 'ג. גרעין התא', why: 'החומר התורשתי (DNA) נמצא בגרעין.' },
+    { q: 'מהו תפקידו של קרום התא?', opts: ['שולט במעבר חומרים אל התא וממנו', 'מייצר אנרגיה לתא', 'מאחסן את החומר התורשתי', 'מבצע פוטוסינתזה'], a: 'א. שולט במעבר חומרים אל התא וממנו', why: 'הקרום הוא מעטפת בררנית: הוא בוחר מה נכנס ומה יוצא.' },
+    { q: 'איזה אברון אחראי על הפקת אנרגיה בתא?', opts: ['כלורופלסט', 'מיטוכונדריה', 'ריאות', 'דופן התא'], a: 'ב. מיטוכונדריה', why: 'במיטוכונדריה מתבצעת הנשימה התאית. ריאות הן איבר בגוף, לא אברון בתא.' },
+    { q: 'מהו תפקידו של הכלורופלסט?', opts: ['הגנה על התא', 'בניית חלבונים', 'אחסון החומר התורשתי', 'ביצוע פוטוסינתזה'], a: 'ד. ביצוע פוטוסינתזה', why: 'בכלורופלסט יש כלורופיל, ושם הצמח מייצר מזון מאור השמש.' },
+    { q: 'איזה אברון קיים בתא צמח ואינו קיים בתא בעל חיים?', opts: ['קרום התא', 'מיטוכונדריה', 'דופן תא', 'גרעין'], a: 'ג. דופן תא', why: 'קרום, מיטוכונדריה וגרעין יש בשני סוגי התאים. דופן יש רק בצמח.' },
+    { q: 'איך נקרא החומר דמוי הג׳לי שממלא את התא, ומקבע את האברונים במקומם?', opts: ['ציטופלזמה', 'גרעין', 'מיטוכונדריה', 'ריבוזום'], a: 'א. ציטופלזמה', why: 'הציטופלזמה היא נוזל ג׳לטיני שממלא את רוב נפח התא, והאברונים נמצאים בתוכו.' },
+    { q: 'איזה אברון אחראי על בניית חלבונים בתא?', opts: ['מיטוכונדריה', 'גרעין', 'כלורופלסט', 'ריבוזום'], a: 'ד. ריבוזום', why: 'הריבוזום בונה חלבונים לפי ההוראות שמגיעות מה-DNA.' },
+    { q: 'מהו המשפט הנכון לגבי תא מצמח התירס ותא מרקמת שריר?', opts: ['לשניהם יש מיטוכונדריה וחלולית', 'התאים הללו זהים לחלוטין', 'לשניהם יש ריבוזומים, אך רק לאחד מהם יש דופן תא', 'לשניהם יש קרום תא ודופן תא'], a: 'ג. לשניהם יש ריבוזומים, אך רק לאחד מהם יש דופן תא', why: 'ריבוזומים יש בכל התאים. דופן תא יש רק לתא הצמח (תירס), לא לתא השריר. חלולית גדולה יש רק בצמח, ולכן א לא נכונה.' }
+  ] },
+  { part: 'חלק ב: נכון / לא נכון', note: 'הקיפו את התשובה הנכונה. אם המשפט אינו נכון, צריך להסביר. כאן ההסבר כבר כתוב.', items: [
+    { q: 'תכונה תורשתית עוברת מההורים לצאצאים דרך החומר התורשתי.', a: 'נכון', why: 'החומר התורשתי הוא ה-DNA, והתכונות התורשתיות כתובות בגנים.' },
+    { q: 'יצור חי מגיב לגירויים מהסביבה.', a: 'נכון', why: 'תגובה לגירויים היא מאפיין חיים. למשל, יד נרתעת מסיר חם, וצמח פונה לאור.' },
+    { q: 'כל היצורים החיים מורכבים מתא אחד בלבד.', a: 'לא נכון', why: 'נימוק: יש יצורים חד-תאיים (כמו חיידק), ויש יצורים רב-תאיים (כמו אדם ועץ).' },
+    { q: 'בתא של בעל חיים יש דופן תא.', a: 'לא נכון', why: 'נימוק: דופן תא יש רק בתא צמחי. בתא של בעל חיים יש רק קרום תא.' },
+    { q: 'הדנ"א בנוי מארבעה סוגים של נוקלאוטידים.', a: 'נכון', why: 'ארבעת הסוגים נבדלים בבסיס החנקני: A, T, C, G.' },
+    { q: 'בדנ"א מול A יהיה U.', a: 'לא נכון', why: 'נימוק: בדנ"א מול A יהיה T (ומול C יהיה G). האות U נמצאת רק ב-RNA.' },
+    { q: 'חלק ממאפייני החיים הם רבייה, נשימה, גדילה והתפתחות.', a: 'נכון', why: 'כל אלה מאפייני חיים.' },
+    { q: 'צמחים אינם יצורים חיים, כי הם אינם נעים ממקום למקום.', a: 'לא נכון', why: 'נימוק: צמחים הם יצורים חיים. הם מקיימים את כל מאפייני החיים, וגם זזים בכוחות עצמם: פונים לאור, ופרחים נפתחים ונסגרים.' }
+  ] },
+  { part: 'חלק ג: מיון תכונות', note: 'סמנו X בעמודה המתאימה: תורשתית או נרכשת. אם התכונה תורשתית ומושפעת מהסביבה, מוסיפים הסבר.', items: [
+    { q: 'צבע שיער', a: 'תורשתית', why: 'צבע השיער הטבעי עובר בתורשה.' },
+    { q: 'צלקת בברך', a: 'נרכשת', why: 'נוצרה מפציעה במהלך החיים.' },
+    { q: 'לבקנות', a: 'תורשתית', why: 'הגוף לא מייצר צבען (פיגמנט). זה כתוב בגנים.' },
+    { q: 'ידיעת השפה בעברית', a: 'נרכשת', why: 'שפה לומדים במהלך החיים.' },
+    { q: 'צורת תנוך האוזן', a: 'תורשתית', why: 'עוברת מההורים.' },
+    { q: 'משקל', a: 'תורשתית, ומושפעת מהסביבה', why: 'מסמנים "תורשתית" ומוסיפים נימוק.' },
+    { q: 'גובה', a: 'תורשתית, ומושפעת מהסביבה', why: 'מסמנים "תורשתית" ומוסיפים נימוק.' },
+    { q: 'רכיבה על אופניים', a: 'נרכשת', why: 'מיומנות שלומדים ומתרגלים.' },
+    { q: 'גומת חן בלחי', a: 'תורשתית', why: 'עוברת מההורים.' },
+    { q: 'שיזוף העור לאחר שהייה בשמש', a: 'נרכשת', why: 'נוצר בגלל השמש, כלומר בגלל הסביבה.' },
+    { q: 'נימוק (לכתוב בשורות של הנימוק)', a: 'משקל וגובה הם תכונות תורשתיות שמושפעות גם מהסביבה.', why: 'הגנים קובעים את הבסיס, אבל גם התזונה והפעילות הגופנית משפיעות על הגובה ועל המשקל.' }
+  ] },
+  { part: 'חלק ד: מדנ"א לתכונה', note: 'סדרו את המשפטים לפי סדר ההתרחשות. (בדף כתוב "שישה משפטים", אבל מופיעים חמישה.)', items: [
+    { q: 'סדרו את המשפטים מהראשון לאחרון:', opts: ['החלבון פועל בגוף וגורם לביטוי התכונה, לדוגמה צבע עיניים.', 'הדנ"א בגרעין מכיל הוראות לבניית חלבון מסוים.', 'הריבוזום מתרגם קודונים לחומצות אמיניות.', 'מולקולת RNA מבצעת תעתיק מהדנ"א ויוצאת אל הציטופלזמה.', 'מולקולת ה-RNA מגיעה אל הריבוזום.'], a: 'ב, ד, ה, ג, א', why: 'ב: ההוראות בדנ"א. ד: ה-RNA מעתיק ויוצא מהגרעין. ה: ה-RNA מגיע לריבוזום. ג: הריבוזום בונה את החלבון מחומצות אמיניות. א: החלבון גורם לתכונה. לזכירה: DNA ← RNA ← ריבוזום ← חלבון ← תכונה.' }
+  ] },
+  { part: 'חלק ה: סדרי גודל במבנה הדנ"א', note: 'סדרו את המושגים מהגדול אל הקטן.', items: [
+    { q: 'סדרו מהגדול לקטן:', opts: ['נוקלאוטיד', 'גרעין', 'תא', 'כרומוזום', 'מולקולת דנ"א'], a: 'ג, ב, ד, ה, א', why: 'תא ← גרעין ← כרומוזום ← מולקולת דנ"א ← נוקלאוטיד.' }
+  ] }
+];
+
 const CARDS = [
   { f: '7 מאפייני החיים', b: 'רבייה, הזנה, מבנה תאי, גדילה והתפתחות, הפרשה, נשימה תאית, תנועה עצמית.<br><small>לזכירה: מסי אוכל, נושם, מזיע, גדל, יש לו ילדים, רץ, וכולו תאים.</small>' },
   { f: 'נשימה תאית', b: 'תהליך כימי בתאים (במיטוכונדריה) שבו מופקת אנרגיה מחומרי מזון.<br><small>דוגמה: בריצה נושמים מהר, כדי שהתאים יקבלו חמצן.</small>' },
@@ -786,7 +839,7 @@ document.addEventListener('click', e => {
   const a = e.target.closest('[data-act="home"]'); if (a) { renderHome(); return; }
   const g = e.target.closest('[data-go]'); if (!g) return;
   const [v, arg] = g.dataset.go.split(':');
-  if (v === 'mission') startMission(arg); else if (v === 'boss') startBoss(); else if (v === 'cards') startCards(); else if (v === 'plan') renderPlan();
+  if (v === 'mission') startMission(arg); else if (v === 'boss') startBoss(); else if (v === 'cards') startCards(); else if (v === 'plan') renderPlan(); else if (v === 'qa') renderQA();
 });
 function toTop() { window.scrollTo({ top: 0 }); }
 function starsHTML(n) { return '<span class="stars">' + [1, 2, 3].map(k => `<span class="${k <= (n || 0) ? 'on' : ''}">★</span>`).join('') + '</span>'; }
@@ -811,7 +864,7 @@ function renderHome() {
     <div class="count">${countTxt}</div>
     <h1>מסע אל תוך התא</h1>
     <p>4 משימות קצרות, חזרה לפי מבחן לדוגמה, ובסוף מבחן סיכום על כל החומר. כל משימה לוקחת בערך 10 דקות. כל תשובה נכונה נותנת נקודות (XP), והנקודות מעלות אותך ברמה. כל רמה נקראת על שם חלק בגוף, מהקטן לגדול: נוקלאוטיד, גן, כרומוזום, גרעין, תא, רקמה, איבר, ובסוף אלוף המדעים.</p>
-    <div class="btns" style="justify-content:flex-start"><button class="btn primary big" data-go="mission:review">חזרה לבוחן: מבחן לדוגמה ←</button>${cta.replace('btn primary big', 'btn big')}</div>
+    <div class="btns" style="justify-content:flex-start"><button class="btn primary big" data-go="qa">שאלות ותשובות מהמבחן לדוגמה ←</button><button class="btn big" data-go="mission:review">חזרה לבוחן כמשחק ←</button>${cta.replace('btn primary big', 'btn big')}</div>
   </section>
   <h2 class="sec-h">המפה</h2>
   <div class="missions">
@@ -821,6 +874,9 @@ function renderHome() {
     <button class="mcard" style="--mc:var(--pink)" data-go="boss">
       <span class="tag">שלב אחרון</span><h3>מבחן סיכום</h3><p>12 שאלות מכל החומר. יש לך 3 לבבות, וכל טעות מורידה לב.</p><span class="num" aria-hidden="true">06</span>
       <span class="meta"><span>~8 דקות</span>${starsHTML(S.stars.boss)}</span></button>
+    <button class="mcard" style="--mc:var(--sky)" data-go="qa">
+      <span class="tag">דף לימוד</span><h3>שאלות ותשובות</h3><p>כל השאלות מהמבחן לדוגמה, עם התשובות וההסברים.</p><span class="num" aria-hidden="true">07</span>
+      <span class="meta"><span>~10 דקות</span><span></span></span></button>
   </div>
   <div class="extras">
     <button class="xcard" data-go="cards"><span><h3>שליפה מהירה</h3><p>${CARDS.length} כרטיסיות. מושלם ל-5 דקות לפני הבוחן.</p></span></button>
@@ -1106,6 +1162,34 @@ function drawCard() {
   $('#again').onclick = () => { C.deck.push(C.deck.shift()); drawCard(); };
 }
 
+/* ---------- questions and answers (step 07) ---------- */
+function renderQA() {
+  toTop(); M = null; hush(); READ = '';
+  const L = 'אבגדה';
+  app.innerHTML = `<section class="qa">
+    <div class="lesson-top"><button class="homebtn" data-act="home">🏠 לדף הראשי</button><button class="ghost" id="qaToggle">הסתר תשובות (לתרגול)</button></div>
+    <h2 style="font-size:30px; margin-block:8px 4px">שאלות ותשובות</h2>
+    <p style="margin:0 0 6px; color:var(--muted)">כל השאלות מהמבחן לדוגמה, עם התשובה הנכונה והסבר קצר.</p>
+    <p style="margin:0 0 10px; color:var(--muted)">רוצה לבדוק את עצמך? לחץ על "הסתר תשובות", ענה בראש, ואז פתח כל תשובה.</p>
+    ${QA.map(sec => `<h3 class="qa-part">${sec.part}</h3>${sec.note ? `<p class="qa-note">${sec.note}</p>` : ''}
+      ${sec.items.map((it, n) => `<div class="qa-item">
+        <div class="qa-q"><b>${n + 1}.</b> ${it.q}</div>
+        ${it.opts ? `<ul class="qa-opts">${it.opts.map((o, k) => `<li><span>${L[k]}.</span> ${o}</li>`).join('')}</ul>` : ''}
+        <button class="ghost qa-show" hidden>הצג תשובה</button>
+        <div class="qa-ans"><b>תשובה: ${it.a}</b>${it.why ? `<span>${it.why}</span>` : ''}</div>
+      </div>`).join('')}`).join('')}
+    <div class="btns" style="margin-top:16px"><button class="btn primary" data-go="mission:review">לתרגל כמשחק ←</button><button class="btn" data-act="home">🏠 לדף הראשי</button></div>
+  </section>`;
+  let hide = false;
+  $('#qaToggle').onclick = () => {
+    hide = !hide;
+    $$('.qa-ans', app).forEach(a => a.hidden = hide);
+    $$('.qa-show', app).forEach(b => b.hidden = !hide);
+    $('#qaToggle').textContent = hide ? 'הצג את כל התשובות' : 'הסתר תשובות (לתרגול)';
+  };
+  $$('.qa-show', app).forEach(b => b.onclick = () => { b.hidden = true; b.nextElementSibling.hidden = false; });
+}
+
 /* ---------- plan ---------- */
 const PLAN = [
   { id: 'd1', name: 'חמישי', date: '15.10', what: 'משימה 1: מאפייני חיים (10 דקות)' },
@@ -1130,7 +1214,7 @@ function renderPlan() {
 }
 
 /* one sentence per line: after ". " / "! " / "? " start a new line with a small gap */
-const SKIP = '.opt, .chip, .btn, .pill, .ghost, .counter, .qlabel, .tag, .zoom-trail, .keys, .strand, svg, script, style';
+const SKIP = '.opt, .chip, .btn, .pill, .ghost, .counter, .qlabel, .tag, .qa-ans b, .qa-opts, .zoom-trail, .keys, .strand, svg, script, style';
 function splitSentences(root) {
   const w = document.createTreeWalker(root, NodeFilter.SHOW_TEXT, {
     acceptNode: n => /[^0-9][.!?]\s+\S/.test(n.nodeValue) && !(n.parentElement && n.parentElement.closest(SKIP)) ? NodeFilter.FILTER_ACCEPT : NodeFilter.FILTER_REJECT
